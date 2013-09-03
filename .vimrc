@@ -5,12 +5,6 @@ set nocompatible
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Setup Pathogen
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" call pathogen#infect()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basic editor settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set hidden         " hide buffers, instead of closing them
@@ -44,10 +38,14 @@ set ignorecase     " ignore case when searching...
 set smartcase      " ...unless caps were explicitly used in search
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn on line breaks
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set lbr
+" http://vim.wikia.com/wiki/Word_wrap_without_line_breaks
+set wrap
+set linebreak
+set nolist  " list disables linebreak
+set textwidth=0
+set wrapmargin=0
+set formatoptions+=l
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -71,4 +69,5 @@ nmap <leader>sv :so $MYVIMRC
 " move down actual lines on the screen, not real lines in file
 nmap j gj
 nmap k gk
+
 
