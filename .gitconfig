@@ -1,0 +1,19 @@
+[user]
+	name = Jamie Kurtz
+    email = jkurtz2530@gmail.com
+
+
+[difftool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+[difftool]
+        prompt = false
+[diff]
+        tool = kdiff3
+[mergetool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+[mergetool]
+        keepBackup = false
+[merge]
+        tool = kdiff3

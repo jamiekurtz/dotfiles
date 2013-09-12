@@ -1,3 +1,9 @@
-ln -s ~/wd/dotfiles/.vimrc ~/.vimrc
+if [ ! -f ~/.vimrc ]; then 
+    ln -s ~/wd/dotfiles/.vimrc ~/.vimrc
+fi
+
+if [ ! -f ~/.gitconfig ]; then 
+    ln -s ~/wd/dotfiles/.gitconfig ~/.gitconfig
+fi
 
 
