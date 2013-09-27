@@ -6,4 +6,9 @@ if [ ! -f ~/.gitconfig ]; then
     ln -s ~/wd/dotfiles/.gitconfig ~/.gitconfig
 fi
 
+if [ ! -f ~/.bashrc ]; then 
+    ln -s ~/wd/dotfiles/.bashrc ~/.bashrc
+fi
+
+
 
