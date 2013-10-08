@@ -11,4 +11,9 @@ if [ ! -f ~/.bashrc ]; then
 fi
 
 
+mkdir ~/.vim
+mkdir ~/.vim/colors
+cp zenburn.vim ~/.vim/colors
 
+
+cp xfce4-keyboard-shortcuts.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml
