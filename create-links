@@ -16,4 +16,3 @@ mkdir ~/.vim/colors
 cp zenburn.vim ~/.vim/colors
 
 
-cp -r xfce-perchannel-xml ~/.config/xfce4/xfconf/
