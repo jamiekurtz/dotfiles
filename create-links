@@ -11,8 +11,11 @@ if [ ! -f ~/.bashrc ]; then
 fi
 
 
-mkdir ~/.vim
-mkdir ~/.vim/colors
+test -d ~/.vim || mkdir ~/.vim
+test -d ~/.vim/colors || mkdir ~/.vim/colors
 cp zenburn.vim ~/.vim/colors
 
+
+test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
+cp .gnome2/gedit/plugins/* ~/.gnome2/gedit/plugins/
 
