@@ -12,8 +12,7 @@ fi
 
 
 test -d ~/.vim || mkdir ~/.vim
-test -d ~/.vim/colors || mkdir ~/.vim/colors
-cp zenburn.vim ~/.vim/colors
+cp .vim/ ~/.vim -r
 
 
 test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
