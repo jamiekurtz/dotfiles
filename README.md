@@ -1,4 +1,4 @@
 dotfiles
 ========
 
-Various dot files and profiles for Windows and Linux
+Various dot files and profiles for Linux
