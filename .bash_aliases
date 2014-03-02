@@ -1,4 +1,4 @@
-alias ll="ls -alc"
+alias ll="ls -alch"
 alias bdown="xrandr --output eDP1 --brightness 0.6"
 alias bup="xrandr --output eDP1 --brightness 1.0"
 alias clip="xclip -select clipboard"

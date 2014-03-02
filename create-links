@@ -15,6 +15,6 @@ test -d ~/.vim || mkdir ~/.vim
 cp .vim/ ~/.vim -r
 
 
-test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
-cp .gnome2/gedit/plugins/* ~/.gnome2/gedit/plugins/
+# test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
+# cp .gnome2/gedit/plugins/* ~/.gnome2/gedit/plugins/
 
