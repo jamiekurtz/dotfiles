@@ -13,7 +13,7 @@ fi
 
 test -d ~/.vim || mkdir ~/.vim
 cp .vim/ ~/ -r
-mkdir ~./backup
+mkdir ~/.backup
 
 
 test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
