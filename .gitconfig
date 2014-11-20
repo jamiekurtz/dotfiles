@@ -16,4 +16,13 @@
 [mergetool]
         keepBackup = false
 [merge]
-        tool = kdiff3
+	tool = kdiff3
+[push]
+	default = simple
+[core]
+    editor = vim
+
+[alias]
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    unstage = reset HEAD --
+    last = log -1 HEAD

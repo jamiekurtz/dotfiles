@@ -11,11 +11,11 @@ fi
 #fi
 
 
-test -d ~/.vim || mkdir ~/.vim
+mkdir -p ~/.vim
 cp .vim/ ~/ -r
 mkdir ~/.backup
 
 
-test -d ~/.gnome2/gedit/plugins || mkdir ~/.gnome2/gedit/plugins
-cp .gnome2/gedit/plugins/* ~/.gnome2/gedit/plugins/
+mkdir -p ~/.local/share/gedit/plugins
+cp .local/share/gedit/plugins/* ~/.local/share/gedit/plugins -r
 
