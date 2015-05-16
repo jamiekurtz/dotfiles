@@ -1,3 +1,5 @@
+
+set clipboard=unnamedplus
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Run in vim mode all the time.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -75,9 +77,10 @@ nmap <leader>sv :so $MYVIMRC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ctrl-S to save (like I'm used to)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:nmap <c-s> :w<CR>
-:imap <c-s> <Esc>:w<CR>a
-":imap <c-s> <Esc><c-s>
+nmap <c-s> :w<cr>
+imap <c-s> <esc>:w<cr>a
+" Also need to put the following in .bashrc in order to allow c-s to be passed
+" through to VIM:  bind -r '\C-s'; stty -ixon
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

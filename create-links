@@ -6,16 +6,13 @@ if [ ! -f ~/.gitconfig ]; then
     ln -s ~/wd/dotfiles/.gitconfig ~/.gitconfig
 fi
 
-#if [ ! -f ~/.bashrc ]; then 
-#    ln -s ~/wd/dotfiles/.bashrc ~/.bashrc
-#fi
+if [ ! -f ~/.bash_aliases ]; then 
+    ln -s ~/wd/dotfiles/.bash_aliases ~/.bash_aliases
+fi
 
 
 mkdir -p ~/.vim
 cp .vim/ ~/ -r
-mkdir ~/.backup
+mkdir -p ~/.backup
 
-
-mkdir -p ~/.local/share/gedit/plugins
-cp .local/share/gedit/plugins/* ~/.local/share/gedit/plugins -r
 
