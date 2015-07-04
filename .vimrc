@@ -89,5 +89,19 @@ imap <c-s> <esc>:w<cr>a
 " move down actual lines on the screen, not real lines in file
 nmap j gj
 nmap k gk
+set whichwrap+=<,>,h,l,[,]
 
+augroup vimrcEx
+  autocmd!
 
+  " Set syntax highlighting for specific file types
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+  " Enable spellchecking for Markdown
+  autocmd FileType markdown setlocal spell spelllang=en_us
+
+  " Automatically wrap at 72 characters and spell check git commit messages
+  "autocmd FileType gitcommit setlocal textwidth=72
+  " autocmd FileType gitcommit setlocal spell spellang=en_us
+
+augroup END
