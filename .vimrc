@@ -83,6 +83,27 @@ imap <c-s> <esc>:w<cr>a
 " through to VIM:  bind -r '\C-s'; stty -ixon
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Pathogen :)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" execute pathogen#infect()
+filetype off                    " force reloading *after* pathogen loaded
+call pathogen#helptags()
+call pathogen#infect()
+filetype plugin indent on       " enable detection, plugins and indenting in one step
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Explore settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:netrw_preview   = 1
+let g:netrw_liststyle = 3
+let g:netrw_winsize   = 30
+nnoremap <F5> :buffers<CR>:buffer<Space>
+autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p
+nnoremap <F6> <c-w><c-w>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

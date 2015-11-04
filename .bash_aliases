@@ -1,4 +1,4 @@
-alias ll="ls -alh"
+alias ll="ls -lh"
 alias clip="xclip -select clipboard"
 alias bc="bc -l"
 
@@ -13,4 +13,8 @@ export NPM_PACKAGES=~/.npm_packages
 export NODE_PATH=~/.npm_packages/lib/node_modules
 export PATH=/home/jkurtz/MyApps/android-sdk-linux/tools:/home/jkurtz/MyApps/android-sdk-linux/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_packages/bin:~/.npm_packages/lib/node_modules
 
+export PATH=~/bin:$PATH 
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/wdgo
+export PATH=$PATH:$GOPATH/bin
 

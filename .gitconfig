@@ -1,5 +1,6 @@
 [user]
 	name = Jamie Kurtz
+	email = jamie@jamiekurtz.com
 
 
 [difftool "kdiff3"]
