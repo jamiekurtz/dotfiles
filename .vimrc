@@ -19,6 +19,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
+
 set autoindent
 set laststatus=2
 set ruler             " show cursor position
@@ -100,9 +101,10 @@ let g:netrw_preview   = 1
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 30
 nnoremap <F5> :buffers<CR>:buffer<Space>
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
+autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd VimEnter * wincmd p
 nnoremap <F6> <c-w><c-w>
+map <F2> :NERDTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around
