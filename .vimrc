@@ -103,8 +103,8 @@ let g:netrw_winsize   = 30
 nnoremap <F5> :buffers<CR>:buffer<Space>
 autocmd vimenter * if !argc() | NERDTree | endif
 "autocmd VimEnter * wincmd p
-nnoremap <F6> <c-w><c-w>
-map <F2> :NERDTreeToggle<CR>
+nnoremap <F2> <c-w><c-w>
+map <F6> :NERDTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around
