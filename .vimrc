@@ -1,5 +1,5 @@
 
-set clipboard=unnamedplus
+set clipboard=unnamed
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Run in vim mode all the time.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -29,7 +29,7 @@ set shell=bash
 set showcmd
 set cursorline
 let mapleader=","
-
+set backspace=indent,eol,start
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -62,9 +62,10 @@ set backupdir=~/.backup//
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Color settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set t_Co=256
-"set background=dark
+set t_Co=256
 colors zenburn
+hi Normal ctermfg=none ctermbg=none
+hi CursorLine ctermfg=none ctermbg=none
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
