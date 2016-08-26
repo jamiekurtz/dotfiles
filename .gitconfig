@@ -23,6 +23,9 @@
     editor = vim
 
 [alias]
-    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    ls = log --pretty=format:"%C(yellow)%h\\ %Cgreen%cr\\ %Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
     unstage = reset HEAD --
     last = log -1 HEAD
+    diffd = difftool -d develop
+[color]
+	ui = true
