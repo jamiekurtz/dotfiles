@@ -1,7 +1,7 @@
-alias ll="ls -lh"
+alias ll="ls -lhiGF"
 alias clip="xclip -select clipboard"
+#alias clip="pbcopy"
 alias bc="bc -l"
-
 function psg() { ps ax | grep "$@"; }
 
 function de() { ssh diaglocal "cd /vagrant && $@"; }
@@ -21,5 +21,7 @@ export PATH=~/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/wdgo
 export PATH=$PATH:$GOPATH/bin
+
+alias mongotools="docker run -it -v `pwd`:/wd --rm jakurtz/mongotools"
 
 

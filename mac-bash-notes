@@ -1,0 +1,26 @@
+Mac loads a login shell when starting with Terminal
+
+.bashrc only loads with non-login shells on Mac
+
+Therefore, should source .bashrc from one of the other ones.
+
+Recommended approach on Mac (and to be compatible with Linux config):
+1. Use .bashrc for all non-aliases
+2. Use .bash_aliases for all aliases
+3. Source .bash_aliases from .bashrc
+4. On a Mac, since it doesn't load .bashrc, you can source it from .bash_profile
+
+
+bash load order:
+1. /etc/profile (system wide, all the time)
+2a. ~/.bash_profile (exists after if valid)
+2b. ~/.bash_login (exists after if valid)
+2c. ~/.profile (exists after if valid)
+
+Good reference: http://hayne.net/MacDev/Notes/unixFAQ.html#loginShell
+
+login shell -> opening via Terminal (i.e. not runnnig a shell or script)
+non-login shell -> running a shell or script from terminal
+interactive -> interact with in a terminal window
+non-interactive -> running a shell script that starts a new script
+

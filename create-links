@@ -10,9 +10,13 @@ if [ ! -f ~/.bash_aliases ]; then
     ln -s ~/wd/dotfiles/.bash_aliases ~/.bash_aliases
 fi
 
+if [ ! -f ~/.bashrc ]; then 
+    ln -s ~/wd/dotfiles/.bashrc ~/.bashrc
+fi
+
 
 mkdir -p ~/.vim
-cp .vim/ ~/ -r
+cp -r .vim ~/ 
 mkdir -p ~/.backup
 
 
