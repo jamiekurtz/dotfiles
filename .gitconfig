@@ -9,7 +9,7 @@
 [difftool]
         prompt = false
 [diff]
-        tool = kdiff3
+	tool = meld
 [mergetool "kdiff3"]
     path = /usr/bin/kdiff3
     trustExitCode = false
@@ -33,3 +33,7 @@
 	required = true
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
+[diff "tool"]
+	cmd = meld -d
+[url "git@github.com:"]
+	insteadOf = https://github.com/
