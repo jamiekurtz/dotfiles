@@ -6,9 +6,11 @@ function psg() { ps ax | grep "$@"; }
 
 function de() { ssh diaglocal "cd /vagrant && $@"; }
 
-function vpnd() { sudo openvpn --config ~/jamie-sync/diagnotes/mac-dev.ovpn;  }
-function vpns() { sudo openvpn --config ~/jamie-sync/diagnotes/mac-staging.ovpn; }
-function vpnp() { sudo openvpn --config ~/jamie-sync/diagnotes/linux-prod.ovpn ; }
+# sudo apt-get install openvpn easy-rsa xsel
+# might need to set --verb 4 for below commands
+function vpnd() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/mac-dev.ovpn;  }
+function vpns() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/mac-staging.ovpn; }
+function vpnp() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/linux-prod.ovpn ; }
 
 #PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 # http://ezprompt.net/
@@ -18,7 +20,7 @@ bind -r '\C-s'; stty -ixon
 
 export NPM_PACKAGES=~/.npm_packages
 export NODE_PATH=~/.npm_packages/lib/node_modules
-export PATH=/home/jkurtz/MyApps/android-sdk-linux/tools:/home/jkurtz/MyApps/android-sdk-linux/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_packages/bin:~/.npm_packages/lib/node_modules:/usr/sbin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_packages/bin:~/.npm_packages/lib/node_modules:/usr/sbin
 
 export PATH=~/bin:$PATH 
 export PATH=$PATH:/usr/local/go/bin
