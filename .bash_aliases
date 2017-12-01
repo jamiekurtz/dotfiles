@@ -25,6 +25,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_pack
 export PATH=~/bin:$PATH 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
+export PATH=~/.local/bin:$PATH
 
 export GOPATH=$HOME/go
 
