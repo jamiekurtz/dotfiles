@@ -25,6 +25,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_pack
 export PATH=~/bin:$PATH 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
+export PATH=~/.local/bin:$PATH
 
 export GOPATH=$HOME/go
 
@@ -36,4 +37,5 @@ function gd() { f=`mktemp`.patch; git diff develop > $f; /opt/google/chrome/goog
 
 function dn() { ./dn.sh "$@" ; }
 function git-clean-feature { git branch | grep "feature/" | xargs git branch -D - ; }
+function cdgo() { cd ~/go/src/github.com/diagnotes; }
 
