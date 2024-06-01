@@ -36,4 +36,5 @@
 [diff "tool"]
 	cmd = meld -d
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
+

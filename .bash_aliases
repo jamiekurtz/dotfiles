@@ -1,16 +1,8 @@
 alias ll="ls -lhiGF"
 alias clip="xclip -select clipboard"
-#alias clip="pbcopy"
 alias bc="bc -l"
 function psg() { ps ax | grep "$@"; }
 
-function de() { ssh diaglocal "cd /vagrant && $@"; }
-
-# sudo apt-get install openvpn easy-rsa xsel
-# might need to set --verb 4 for below commands
-function vpnd() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/mac-dev.ovpn;  }
-function vpns() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/mac-staging.ovpn; }
-function vpnp() { sudo openvpn --config ~/jamie-sync/diagnotes/openvpn/linux/linux-prod.ovpn ; }
 
 #PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 # http://ezprompt.net/
@@ -18,15 +10,12 @@ PS1="\[\e[01;32m\]\w\[\e[m\] \\$ "
 
 bind -r '\C-s'; stty -ixon
 
-export NPM_PACKAGES=~/.npm_packages
-export NODE_PATH=~/.npm_packages/lib/node_modules
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:~/.npm_packages/bin:~/.npm_packages/lib/node_modules:/usr/sbin
 
 export PATH=~/bin:$PATH 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=~/.local/bin:/snap/bin:$PATH
-export PATH=~/go/src/github.com/uber/cadence:$PATH
 
 export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_261
 
@@ -58,4 +47,6 @@ function prod-sql-primary() { ssh diagnotes-prod-bastion -L 5432:proddb01.cvhyo4
 function prod-trunc() { ssh diagnotes-prod-bastion -L 5432:proddb01-2021-03-09-pre-truncate.cvhyo4oarleo.us-east-1.rds.amazonaws.com:5432 ; }
 function prod-bl() { ssh diagnotes-prod-bastion -L 3306:backline-prode02-57.cqazk6iiwrwy.us-east-1.rds.amazonaws.com:3306 ; }
 function whatsmyip() { curl -w "\n" ipinfo.io/ip ; }
+
+function rc-run() { docker run --user 1000:1000 --rm -it --workdir /home/bob -v ~/.bash_aliases:/home/bob/.bash_aliases:ro -v ~/.ssh:/home/bob/.ssh:ro -v release-console-home:/home/bob diagnotes/release-console; }
 
