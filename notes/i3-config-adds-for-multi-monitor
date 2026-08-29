@@ -1,0 +1,37 @@
+
+
+set $primary HDMI-1
+set $secondary HDMI-2
+
+# includes scale
+#exec_always --no-startup-id xrandr \
+#  --output $primary --primary --right-of $secondary --scale 0.5x0.5 \
+#  --output $secondary --rotate right --scale 0.5x0.5
+
+# no scale
+exec_always --no-startup-id xrandr \
+  --output $primary --primary --right-of $secondary \
+  --output $secondary --rotate right
+
+workspace 1 output $primary
+workspace 2 output $primary
+workspace 3 output $primary
+workspace 4 output $primary
+workspace 5 output $primary
+workspace 6 output $primary
+workspace 7 output $primary
+workspace 8 output $primary
+workspace 9 output $primary
+workspace 10 output $primary
+
+workspace "claude" output $secondary
+
+# assign [class="Alacritty"] → "static"
+
+
+
+exec_always --no-startup-id xrdb -merge ~/.Xresources
+exec_always --no-startup-id export GDK_SCALE=2
+exec_always --no-startup-id export QT_SCALE_FACTOR=2
+exec_always --no-startup-id export QT_FONT_DPI=192
+

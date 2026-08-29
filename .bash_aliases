@@ -1,0 +1,49 @@
+alias clip="xclip -selection clipboard"
+alias bc="bc -l"
+function psg() { ps ax | grep "$@"; }
+
+# alias nvim="/opt/nvim-linux-x86_64/bin/nvim"
+# alias nvim="/usr/bin/nvim"
+alias vim="nvim"
+alias lg="lazygit"
+alias ll='ls -al'
+alias ld="lazydocker"
+alias rng="pipx run --spec ranger-fm ranger"
+
+# bind -r '\C-s'
+# stty -ixon
+
+# http://ezprompt.net/
+# https://mary.codes/blog/programming/displaying-git-branch-in-linux-terminal/
+PS1="\[\033[01;36m\]\w\[\033[01;33m\]\$(__git_ps1)\[\033[01;32m\]\$\[\033[00m\] "
+
+export JAVA_HOME=/usr/lib/jvm/default
+
+export GOPATH=$HOME/go
+export LEFTHOOK=0
+
+alias mongotools="docker run -it -v $(pwd):/wd --rm jakurtz/mongotools"
+
+#function gd() {
+#  f=$(mktemp).patch
+#  git diff $1 >$f
+#  /opt/google/chrome/google-chrome $f
+#}
+
+function git-clean-feature { git branch | grep "feature/" | xargs git branch -D -; }
+function cdgo() { cd ~/wd/go; }
+function cdnova() { cd ~/wd/alphatradeeng/nova; }
+function cdfirm() { cd ~/wd/firm360; }
+function cdtau() { cd ~/wd/firm360/tau; }
+
+function jup-run() { docker run -p 8090:8888 -v "${PWD}":/home/jovyan/work jupyter/scipy-notebook:6b49f3337709; }
+function browsy-run() { docker run --network=host -v "${PWD}":/home/jovyan/work alphatradeeng/browsy:latest; }
+function py-run() { docker run -v "${PWD}":/home/jovyan/work alphatradeeng/browsy:latest /bin/bash; }
+function prism-run() { docker run -p 8090:8888 -v "${PWD}":/home/jovyan/work diagnotes/prism-notebook:latest; }
+function ate-run() { docker run --network=host -v "${PWD}":/home/jovyan/work alphatradeeng/browsy:latest; }
+function whatsmyip() { curl -w "\n" ipinfo.io/ip; }
+
+function rc-run() { docker run --user 1000:1000 --rm -it --workdir /home/bob -v ~/.bash_aliases:/home/bob/.bash_aliases:ro -v ~/.ssh:/home/bob/.ssh:ro -v release-console-home:/home/bob diagnotes/release-console; }
+function gd() { comm -23 <(git log --pretty=format:"%s" --no-merges $(git branch --show-current) | sort -u) <(git log --pretty=format:"%s" --no-merges $1 | sort -u); }
+function git-diff-master() { git diff master...HEAD; }
+function git-diff-develop() { git diff develop...HEAD; }

@@ -1,0 +1,50 @@
+[user]
+	name = Jamie Kurtz
+	email = jamie@myfirm360.com
+
+[difftool "meld"]
+  path = /usr/bin/meld
+  trustExitCode = false
+
+  
+[difftool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+[difftool]
+        prompt = false
+[diff]
+	tool = meld
+[mergetool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+[mergetool]
+        keepBackup = false
+[merge]
+	tool = kdiff3
+[push]
+	default = simple
+[core]
+	editor = nvim
+
+[alias]
+    ls = log --pretty=format:"%C(yellow)%h\\ %Cgreen%cr\\ %Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    diffd = difftool -d develop
+    diffm = difftool -d master
+    co = checkout
+    s = switch
+    wt = worktree
+[color]
+	ui = true
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+[diff "tool"]
+	cmd = meld -d
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
+[init]
+	defaultBranch = master
