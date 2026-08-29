@@ -12,15 +12,15 @@ sudo apt install sway swayidle swaylock swaybg foot \
   network-manager network-manager-gnome mate-polkit \
   thermald fonts-dejavu
 
+# other stuff
+sudo apt install -y ranger git-flow golang bash-completion
+
 # neovim and related
 sudo apt remove neovim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
 sudo rm -rf /opt/nvim-linux-x86_64
 sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-sudo apt install ripgrep
-
-# other stuff
-sudo apt install ranger git-flow golang
+sudo apt install -y ripgrep
 
 # install nerd fonts
 mkdir -p ~/MyApps
