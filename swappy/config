@@ -1,0 +1,17 @@
+# ~/.config/swappy/config
+# Symlink from ~/dotfiles/swappy/config
+
+[Default]
+save_dir=$HOME/Pictures/Screenshots
+save_filename_format=screenshot-%Y%m%d-%H%M%S.png
+show_panel=true
+
+# Closes the swappy window immediately after Ctrl+C (copy) or Ctrl+S
+# (save) -- this is what makes it feel like Flameshot's one-shot flow
+# instead of a full editor you have to dismiss manually.
+early_exit=true
+
+# Line thickness / default tool state on open
+line_size=5
+text_size=20
+text_font=JetBrainsMono Nerd Font

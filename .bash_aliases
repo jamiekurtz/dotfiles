@@ -2,8 +2,6 @@ alias clip="xclip -selection clipboard"
 alias bc="bc -l"
 function psg() { ps ax | grep "$@"; }
 
-# alias nvim="/opt/nvim-linux-x86_64/bin/nvim"
-# alias nvim="/usr/bin/nvim"
 alias vim="nvim"
 alias lg="lazygit"
 alias ll='ls -al'

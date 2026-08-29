@@ -1,0 +1,29 @@
+# ~/.config/mako/config
+# Symlink from ~/dotfiles/mako/config
+# Reload after edits with: makoctl reload
+
+font=JetBrainsMono Nerd Font 10
+
+background-color=#1e1e2eee
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=4
+padding=10
+margin=10
+
+default-timeout=5000
+ignore-timeout=0
+anchor=top-right
+max-visible=5
+sort=-time
+
+# Critical notifications (e.g. low battery, some Zoom alerts) stay
+# until dismissed and get a distinct border color.
+[urgency=critical]
+border-color=#f38ba8
+default-timeout=0
+
+[urgency=low]
+border-color=#6c7086
+default-timeout=3000
