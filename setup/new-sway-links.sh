@@ -22,4 +22,4 @@ esac
 
 mkdir -p ~/.config/nvim/lua/plugins
 ln -sf $DOTFILES/nvim/init.lua ~/.config/nvim/init.lua
-ln -sf $DOTFILES/nvim/plugins/blink.lua ~/.config/nvim/plugins/blink.lua
+ln -sf $DOTFILES/nvim/plugins/blink.lua ~/.config/nvim/lua/plugins/blink.lua

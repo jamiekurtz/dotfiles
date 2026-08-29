@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # refresh
 sudo apt update
 
@@ -10,7 +12,7 @@ sudo apt install sway swayidle swaylock swaybg foot \
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
   grim slurp swappy jq wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
-  thermald fonts-dejavu
+  thermald fonts-dejavu curl firefox-esr
 
 # other stuff
 sudo apt install -y ranger git-flow golang bash-completion
@@ -23,15 +25,16 @@ sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 sudo apt install -y ripgrep
 
 # install nerd fonts
-mkdir -p ~/MyApps
-cd ~/MyApps
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-cd nerd-fonts
-./install.sh JetBrainsMono
+mkdir -p ~/.local/share/fonts/JetBrainsMonoNF
+cd ~/.local/share/fonts/JetBrainsMonoNF
+wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+unzip JetBrainsMono.zip
+rm JetBrainsMono.zip
+fc-cache -fv
 
 # install lazygit
 go install github.com/jesseduffield/lazygit@latest
 
 # install lazyvim; copy my nvim stuff
-git clone https://github.com/LazyVim/starter ~/.config/nvim
+git clone https://github.com/LazyVim/starter.git ~/.config/nvim
 rm -rf ~/.config/nvim/.git

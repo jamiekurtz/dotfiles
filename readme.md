@@ -22,6 +22,8 @@ sway -C -c ~/.config/sway/config.d/p14.conf
 sway -C -c ~/.config/sway/config.d/meerkat.conf
 ```
 
+Note, you may see the following harmless error: `gpu: amdgpu_cs_ctx_create2 failed`
+
 To launch sway manually from VT:
 
 ```
