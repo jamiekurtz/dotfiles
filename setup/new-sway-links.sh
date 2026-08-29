@@ -19,3 +19,7 @@ shadowws) ln -sf $DOTFILES/sway/config-for-meerkat ~/.config/sway/config ;;
 shadowlt) ln -sf $DOTFILES/sway/config-for-p14 ~/.config/sway/config ;;
 *) echo "unknown host, symlink sway config manually" ;;
 esac
+
+mkdir -p ~/.config/nvim/lua/plugins
+ln -sf $DOTFILES/nvim/init.lua ~/.config/nvim/init.lua
+ln -sf $DOTFILES/nvim/plugins/blink.lua ~/.config/nvim/plugins/blink.lua

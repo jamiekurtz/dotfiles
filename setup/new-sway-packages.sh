@@ -32,6 +32,6 @@ cd nerd-fonts
 # install lazygit
 go install github.com/jesseduffield/lazygit@latest
 
-# install lazyvim
+# install lazyvim; copy my nvim stuff
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
