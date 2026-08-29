@@ -10,3 +10,32 @@ cd ~/wd/dotfiles
 . ~/.profile
 ```
 
+Before launching sway, verify the config:
+
+```
+# root config
+sway -C -c ~/.config/sway/config
+
+# individual files
+sway -C -c ~/.config/sway/config.common
+sway -C -c ~/.config/sway/config.d/p14.conf
+sway -C -c ~/.config/sway/config.d/meerkat.conf
+```
+
+To launch sway manually from VT:
+
+```
+sway
+```
+
+To temporarily disable auto-launch of sway in this profile:
+
+```
+touch ~/.no-sway
+```
+
+The code in `.profile` will see this marker file and skip the launch of sway. Just remove
+that file to return to the auto-launch configuration.
+
+
+

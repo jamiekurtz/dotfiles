@@ -36,6 +36,6 @@ export EDITOR=nvim
 
 # --- Session launch ------------------------------------------------------
 # Start Sway on tty1 if we're not already in a Wayland session.
-if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
+if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ] && [ ! -f "$HOME/.no-sway" ]; then
   exec sway
 fi
