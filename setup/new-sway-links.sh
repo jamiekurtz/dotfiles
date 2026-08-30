@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 DOTFILES=~/wd/dotfiles
-mkdir -p ~/.config/sway ~/.config/foot ~/.config/mako ~/.config/swappy
+mkdir -p ~/.config/sway ~/.config/foot ~/.config/mako ~/.config/swappy ~/.config/i3status
 
 ln -sf $DOTFILES/.gitconfig ~/.gitconfig
 ln -sf $DOTFILES/.bash_aliases ~/.bash_aliases
@@ -13,6 +13,7 @@ ln -sf $DOTFILES/sway/config.d ~/.config/sway/config.d
 ln -sf $DOTFILES/foot/foot.ini ~/.config/foot/foot.ini
 ln -sf $DOTFILES/mako/config ~/.config/mako/config
 ln -sf $DOTFILES/swappy/config ~/.config/swappy/config
+ln -sf $DOTFILES/i3status/config ~/.config/i3status/config
 
 case "$(hostname)" in
 shadowws) ln -sf $DOTFILES/sway/config-for-meerkat ~/.config/sway/config ;;
