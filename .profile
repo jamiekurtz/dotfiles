@@ -16,12 +16,10 @@ fi
 # (e.g. Go installed one place on one box) never leaves a dangling,
 # harmless-but-confusing PATH entry -- it's just silently skipped.
 path_add() {
-  if [ -d "$1" ]; then
-    case ":$PATH:" in
-    *":$1:"*) ;; # already present, don't duplicate
-    *) export PATH="$PATH:$1" ;;
-    esac
-  fi
+  case ":$PATH:" in
+  *":$1:"*) ;; # already present, don't duplicate
+  *) export PATH="$PATH:$1" ;;
+  esac
 }
 
 path_add "$HOME/.local/bin"
