@@ -12,10 +12,11 @@ sudo apt install sway swayidle swaylock swaybg foot \
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
   grim slurp swappy jq wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
-  thermald fonts-dejavu curl firefox-esr
+  thermald fonts-dejavu curl firefox-esr \
+  zip unzip tree
 
 # other stuff
-sudo apt install -y ranger git-flow golang bash-completion
+sudo apt install -y pipx ranger git-flow golang bash-completion
 
 # neovim and related
 sudo apt remove neovim
@@ -35,6 +36,6 @@ fc-cache -fv
 # install lazygit
 go install github.com/jesseduffield/lazygit@latest
 
-# install lazyvim; copy my nvim stuff
+# install lazyvim
 git clone https://github.com/LazyVim/starter.git ~/.config/nvim
 rm -rf ~/.config/nvim/.git
