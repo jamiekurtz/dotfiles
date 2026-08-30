@@ -67,8 +67,6 @@ popd
 # install AWS VPN Client
 curl https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_amd64.deb -o ~/Downloads/awsvpnclient_amd64.debawsvpnclient_amd64.deb
 sudo dpkg -i ~/Downloads/awsvpnclient_amd64.deb
-sudo apt install systemd-resolved
-sudo systemctl --now enable systemd-resolved.service
 sudo systemctl --now enable awsvpnclient
 
 # *****************************
