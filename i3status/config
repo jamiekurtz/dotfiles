@@ -1,0 +1,29 @@
+# ~/.config/i3status/config
+# Called by sway's `status_command i3status` — no sway-side config needed,
+# everything about what the bar shows lives here.
+
+general {
+    colors = true
+    interval = 5
+}
+
+order += "wireless wlp2s0"
+order += "battery 0"
+order += "tztime local"
+
+wireless wlp2s0 {
+    # Signal + SSID only -- no throughput numbers.
+    format_up = "W: (%quality at %essid) %ip"
+    format_down = "W: down"
+}
+
+battery 0 {
+    format = "%status %percentage %remaining"
+    path = "/sys/class/power_supply/BAT0/uevent"
+    low_threshold = 15
+    threshold_type = "percentage"
+}
+
+tztime local {
+    format = "%Y-%m-%d %I:%M %p"
+}
