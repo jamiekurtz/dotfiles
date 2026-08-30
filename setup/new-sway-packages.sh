@@ -8,7 +8,7 @@ sudo apt update
 # base packages for sway on Debian
 sudo apt install sway swayidle swaylock swaybg foot \
   i3status wmenu wofi xwayland dex mako-notifier \
-  pipewire pipewire-pulse wireplumber \
+  pipewire pipewire-pulse wireplumber pulseaudio-utils \
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
   grim slurp swappy jq wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
