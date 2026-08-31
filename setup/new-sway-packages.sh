@@ -16,7 +16,7 @@ sudo apt install sway swayidle swaylock swaybg foot \
   zip unzip tree
 
 # other stuff
-sudo apt install -y pipx ranger git-flow golang bash-completion gpg make
+sudo apt install -y pipx ranger git-flow golang bash-completion gpg make kdiff3
 
 # neovim and related
 sudo apt remove neovim

@@ -13,7 +13,7 @@
 [difftool]
         prompt = false
 [diff]
-	tool = meld
+	tool = kdiff3
 [mergetool "kdiff3"]
     path = /usr/bin/kdiff3
     trustExitCode = false
