@@ -42,7 +42,7 @@ bindsym Ctrl+Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
 floating_modifier $mod normal
 tiling_drag enable
 
-bindsym $mod+Return exec foot
+bindsym $mod+Return exec foot -D "$(swaycwd)"
 
 bindsym $mod+Shift+q kill
 bindsym $mod+q kill

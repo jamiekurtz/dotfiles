@@ -14,6 +14,7 @@ ln -sf $DOTFILES/foot/foot.ini ~/.config/foot/foot.ini
 ln -sf $DOTFILES/mako/config ~/.config/mako/config
 ln -sf $DOTFILES/swappy/config ~/.config/swappy/config
 ln -sf $DOTFILES/i3status/config ~/.config/i3status/config
+ln -sf $DOTFILES/bin/swaycwd ~/.local/bin/swaycwd
 
 case "$(hostname)" in
 shadowws) ln -sf $DOTFILES/sway/config-for-meerkat ~/.config/sway/config ;;

@@ -18,6 +18,9 @@ sudo apt install sway swayidle swaylock swaybg foot \
 # other stuff
 sudo apt install -y pipx ranger git-flow golang bash-completion gpg make kdiff3
 
+# needed for bin/swaycwd
+sudo apt install -y jq gron
+
 # neovim and related
 sudo apt remove neovim
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
