@@ -42,7 +42,7 @@ bindsym Ctrl+Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
 floating_modifier $mod normal
 tiling_drag enable
 
-bindsym $mod+Return exec foot -D "$(swaycwd)"
+bindsym $mod+Return exec sh -c 'd="$(swaycwd 2>/dev/null)"; [ -d "$d" ] || d="$HOME"; foot -D "$d"'
 
 bindsym $mod+Shift+q kill
 bindsym $mod+q kill
@@ -165,8 +165,8 @@ bindsym $mod+minus scratchpad show
 bindsym $mod+f exec thunar
 for_window [app_id="thunar"] move scratchpad, scratchpad show
 
-bindsym $mod+x exec gnome-text-editor
-for_window [app_id="org.gnome.TextEditor"] move scratchpad, scratchpad show
+bindsym $mod+x exec geany
+for_window [app_id="geany"] move scratchpad, scratchpad show
 
 bindsym Control+$alt+l exec swaylock -c 000000
 
