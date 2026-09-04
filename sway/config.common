@@ -175,3 +175,7 @@ bindsym $mod+F1 exec "grep -E '^bindsym' ~/.config/sway/config.common | wmenu -i
 # --- Zoom ------------------------------------------------------------------
 for_window [class="zoom" title="annotate_toolbar"] move to workspace number 99
 for_window [app_id="zoom" title="annotate_toolbar"] move to workspace number 99
+
+# small popup calendar
+bindsym $mod+m exec gsimplecal
+
