@@ -114,16 +114,18 @@ Code, `gh auth login`, `tailscale up`) print their URL instead of failing to
 launch a browser; plus the SSH_AUTH_SOCK stabilization below. No compositor
 launch, so a stray tty login on the server cannot try to start sway.
 
-**`aliases.common`** — `bc`, `psg`, `vim`, `ll`, `clip`, the git helper
-functions (`git-clean-feature`, `gd`, `git-diff-master`, `git-diff-develop`),
-`whatsmyip`, the `cd*` project shortcuts, and `PS1`.
+**`aliases.common`** — `bc`, `psg`, `vim`, `ll`, `clip`, `lg` (lazygit and
+docker are common packages), the git helper functions (`git-clean-feature`,
+`gd`, `git-diff-master`, `git-diff-develop`), `whatsmyip`, the `cd*` project
+shortcuts, `mongotools`, `rc-run`, and `PS1`.
 
-**`aliases.desktop`** — `lg`, `ld`, `rng`, `mongotools`, and the `*-run` docker
-helpers.
+**`aliases.desktop`** — `ld` (lazydocker), `rng` (ranger via pipx), and the
+notebook helpers that expect a browser to open: `jup-run`, `prism-run`.
 
-**`aliases.server`** — `lg`, `ll` variants that make sense headless. Docker
-`*-run` helpers that bind `--network=host` or mount `$PWD` carry over; the
-Jupyter ones that expect a browser do not.
+**`aliases.server`** — the headless-safe docker helpers `browsy-run`,
+`py-run`, `ate-run`. Empty otherwise; the file exists so the symlink target
+is always present and there is an obvious place for future server-only
+additions.
 
 ## Clipboard over tmux and SSH
 
