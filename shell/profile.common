@@ -1,0 +1,45 @@
+# ~/.profile — executed by the command interpreter for login shells.
+# Symlinked from ~/wd/dotfiles/shell/profile.common.
+#
+# Anything specific to one kind of machine lives in ~/.profile.local, which
+# setup/bootstrap.sh symlinks to shell/profile.desktop or shell/profile.server.
+#
+# POSIX sh only: this file is sourced by /bin/sh as well as bash.
+
+# Bash also reads .bashrc for interactive shells, but login shells don't get
+# it automatically — pull it in here so aliases are available even in a login
+# shell.
+if [ -n "${BASH_VERSION:-}" ]; then
+  if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+  fi
+fi
+
+# --- PATH --------------------------------------------------------------
+# Each entry only gets added if the directory actually exists on this
+# machine, so a layout difference between machines never leaves a dangling,
+# harmless-but-confusing PATH entry -- it's just silently skipped.
+path_add() {
+  case ":$PATH:" in
+  *":$1:"*) ;; # already present, don't duplicate
+  *) export PATH="$PATH:$1" ;;
+  esac
+}
+
+path_add "$HOME/.local/bin"
+path_add "/usr/local/go/bin"
+path_add "$HOME/go/bin"
+path_add "$HOME/jamie-sync/bin"
+path_add "/opt/nvim-linux-x86_64/bin"
+
+unset -f path_add
+
+export EDITOR=nvim
+export GOPATH="$HOME/go"
+export JAVA_HOME=/usr/lib/jvm/default
+export LEFTHOOK=0
+
+# --- Profile-specific ----------------------------------------------------
+if [ -f "$HOME/.profile.local" ]; then
+  . "$HOME/.profile.local"
+fi

@@ -11,8 +11,8 @@ status=0
 # exists) -- that breaks bash -n and makes shellcheck error on a missing
 # file. nullglob makes an unmatched glob expand to nothing instead.
 shopt -s nullglob
-shell_files=(shell/*)
-checked_files=(setup/*.sh tests/*.sh bin/*)
+shell_files=(shell/profile.*)
+checked_files=(setup/*.sh tests/*.sh bin/* shell/aliases.common)
 shopt -u nullglob
 
 # shell/profile.* must be POSIX sh, so check them with sh -n as well.

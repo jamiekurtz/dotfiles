@@ -1,0 +1,10 @@
+# Desktop profile — sway workstation.
+# Sourced from ~/.profile via the ~/.profile.local symlink.
+
+# Start Sway on tty1 if we're not already in a Wayland session.
+# `touch ~/.no-sway` disables this without editing the repo.
+if [ -z "${WAYLAND_DISPLAY:-}" ] &&
+  [ "${XDG_VTNR:-}" = 1 ] &&
+  [ ! -f "$HOME/.no-sway" ]; then
+  exec sway
+fi
