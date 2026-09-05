@@ -120,6 +120,13 @@ That prints a public key to add at https://github.com/settings/keys.
 
 Installed from the client. Nothing is needed on the server for it.
 
+## Upgrading an existing machine
+
+`docs/migration-notes.md` lists the pulls that need manual steps. A pull that
+moves a symlink target can leave `~/.profile` dangling, which fails silently
+until your next login — check there before pulling on a machine that was
+configured from an older revision of this repo.
+
 ## Tests
 
 ```
