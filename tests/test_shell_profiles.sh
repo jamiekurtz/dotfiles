@@ -103,4 +103,33 @@ done
 assert_contains "$content" '.bash_aliases.local' \
   "aliases.common sources ~/.bash_aliases.local"
 
+# --- tmux clipboard --------------------------------------------------------
+tmuxconf=$(cat "$DOTFILES/.tmux.conf")
+assert_contains "$tmuxconf" "set -g set-clipboard on" \
+  ".tmux.conf enables set-clipboard"
+assert_contains "$tmuxconf" "allow-passthrough on" \
+  ".tmux.conf enables DCS passthrough"
+assert_contains "$tmuxconf" "terminal-features" \
+  ".tmux.conf advertises the clipboard terminal feature"
+
+# tmux must actually accept the file.
+if command -v tmux >/dev/null 2>&1; then
+  out=$(tmux -f "$DOTFILES/.tmux.conf" -L dotfiles-test \
+    new-session -d 2>&1) || fail "tmux rejected .tmux.conf: $out"
+  got=$(tmux -L dotfiles-test show -gv set-clipboard)
+  tmux -L dotfiles-test kill-server 2>/dev/null || true
+  assert_eq "on" "$got" "tmux reports set-clipboard on"
+else
+  echo "  (tmux not installed, skipping live tmux check)"
+fi
+
+# --- neovim clipboard ------------------------------------------------------
+initlua=$(cat "$DOTFILES/nvim/init.lua")
+assert_contains "$initlua" "have_nerd_font" \
+  "init.lua sets have_nerd_font"
+assert_contains "$initlua" "osc52" \
+  "init.lua wires up the OSC 52 clipboard provider"
+assert_contains "$initlua" "SSH_TTY" \
+  "init.lua gates the OSC 52 provider on an SSH session"
+
 echo "test_shell_profiles: ok"
