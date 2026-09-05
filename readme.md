@@ -14,6 +14,7 @@ is symlinks only; packages are a separate step below.
 ## Desktop
 
 ```
+touch ~/.no-sway  # delete this file when ready to auto-launch sway
 mkdir -p ~/wd
 git clone https://github.com/jamiekurtz/dotfiles.git ~/wd/dotfiles
 cd ~/wd/dotfiles
