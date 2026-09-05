@@ -13,7 +13,7 @@ sudo apt install -y \
   grim slurp swappy wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
   thermald fonts-dejavu firefox-esr thunar gsimplecal \
-  kdiff3 ranger
+  kdiff3
 
 # needed for bin/swaycwd
 sudo apt install -y jq gron

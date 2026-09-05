@@ -6,7 +6,7 @@ sudo apt update
 
 sudo apt install -y \
   git git-flow tmux curl wget jq gron tree zip unzip ripgrep btop \
-  make gpg bash-completion pipx golang ca-certificates gnupg
+  make gpg bash-completion pipx golang ca-certificates gnupg ranger
 
 # --- neovim (upstream release, Debian's is too old for LazyVim) -----------
 sudo apt remove -y neovim || true
