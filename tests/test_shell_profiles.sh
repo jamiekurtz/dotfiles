@@ -25,8 +25,16 @@ assert_eq "$tmp/home/go" "$(probe shell/profile.common GOPATH)" \
   "profile.common exports GOPATH"
 assert_eq "/usr/lib/jvm/default" "$(probe shell/profile.common JAVA_HOME)" \
   "profile.common exports JAVA_HOME"
+
+# path_add only adds a PATH entry when the directory actually exists.
+mkdir -p "$tmp/home/.local/bin"
 assert_contains "$(probe shell/profile.common PATH)" "$tmp/home/.local/bin" \
-  "profile.common adds ~/.local/bin to PATH"
+  "profile.common adds ~/.local/bin to PATH when it exists"
+rmdir "$tmp/home/.local/bin"
+case "$(probe shell/profile.common PATH)" in
+*"$tmp/home/.local/bin"*)
+  fail "profile.common must not add ~/.local/bin to PATH when it does not exist" ;;
+esac
 
 # profile.common must NOT launch a compositor -- that belongs to the desktop
 # profile only.

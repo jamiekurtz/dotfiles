@@ -2,6 +2,15 @@
 # Desktop profile — sway workstation.
 # Sourced from ~/.profile via the ~/.profile.local symlink.
 
+# Resilio Sync, desktop-only. Skipped harmlessly if the directory doesn't
+# exist (e.g. Resilio Sync not installed yet).
+if [ -d "$HOME/jamie-sync/bin" ]; then
+  case ":$PATH:" in
+  *":$HOME/jamie-sync/bin:"*) ;; # already present, don't duplicate
+  *) export PATH="$PATH:$HOME/jamie-sync/bin" ;;
+  esac
+fi
+
 # Start Sway on tty1 if we're not already in a Wayland session.
 # `touch ~/.no-sway` disables this without editing the repo.
 if [ -z "${WAYLAND_DISPLAY:-}" ] &&

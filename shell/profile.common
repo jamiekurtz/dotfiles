@@ -21,6 +21,7 @@ fi
 # machine, so a layout difference between machines never leaves a dangling,
 # harmless-but-confusing PATH entry -- it's just silently skipped.
 path_add() {
+  [ -d "$1" ] || return 0
   case ":$PATH:" in
   *":$1:"*) ;; # already present, don't duplicate
   *) export PATH="$PATH:$1" ;;
@@ -30,7 +31,6 @@ path_add() {
 path_add "$HOME/.local/bin"
 path_add "/usr/local/go/bin"
 path_add "$HOME/go/bin"
-path_add "$HOME/jamie-sync/bin"
 path_add "/opt/nvim-linux-x86_64/bin"
 
 unset -f path_add
