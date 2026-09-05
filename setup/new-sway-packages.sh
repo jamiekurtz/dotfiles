@@ -13,7 +13,7 @@ sudo apt install sway swayidle swaylock swaybg foot \
   grim slurp swappy jq wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
   thermald fonts-dejavu curl firefox-esr \
-  zip unzip tree
+  zip unzip tree thunar
 
 # other stuff
 sudo apt install -y pipx ranger git-flow golang bash-completion \
