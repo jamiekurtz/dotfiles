@@ -60,6 +60,12 @@ cd ~/wd/dotfiles
 machine you are sitting at. `TS_AUTHKEY=tskey-auth-... ./setup/server-tailscale.sh`
 does it unattended.
 
+`bootstrap.sh server` warns to stderr if `~/.bashrc` is missing or doesn't
+source `~/.bash_aliases` — this repo only owns `~/.bash_aliases` itself, so
+if the `jkurtz` user was created without `/etc/skel` (common with cloud-init),
+nothing else will source it and the prompt and aliases will silently never
+load. Follow the warning's instructions if you see it.
+
 Then on your workstation, edit `~/.ssh/config.d/agentbox.conf` — your own
 copy, not the repo's template — and replace the `CHANGEME` placeholder in
 the `HostName` line with the box's MagicDNS name — run `tailscale status` on
