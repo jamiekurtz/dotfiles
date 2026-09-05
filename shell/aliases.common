@@ -6,7 +6,7 @@ alias vim="nvim"
 alias lg="lazygit"
 alias ll='ls -al'
 alias ld="lazydocker"
-alias rng="pipx run --spec ranger-fm ranger"
+alias rng="ranger"
 
 # bind -r '\C-s'
 # stty -ixon
