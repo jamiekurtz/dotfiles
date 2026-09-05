@@ -356,9 +356,6 @@ assert_eq "${ESC}]52;c;YQpi${BEL}" "$(cat "$out")" \
 out="$tmp/long"
 head -c 400 /dev/zero | tr '\0' 'x' |
   env -u WAYLAND_DISPLAY -u TMUX CLIP_TTY="$out" "$CLIP"
-assert_eq "1" "$(wc -l <"$out" | tr -d ' ')0" \
-  "long payloads produce no embedded newlines" 2>/dev/null ||
-  true
 lines=$(tr -cd '\n' <"$out" | wc -c | tr -d ' ')
 assert_eq "0" "$lines" "long payloads produce no embedded newlines"
 
@@ -382,12 +379,6 @@ assert_eq "" "$(cat "$out")" \
 
 echo "test_clip: ok"
 ```
-
-Note: delete the two lines beginning `assert_eq "1" "$(wc -l ...` and the
-`true` that follows them — they are a redundant first attempt at the
-no-newline check that the `lines=` assertion below already covers correctly.
-They are shown here only so the reviewer sees the intent; the committed test
-keeps just the `lines=` version.
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -572,10 +563,15 @@ assert_contains "$content" ".no-sway" \
 
 # --- aliases.common --------------------------------------------------------
 content=$(cat "$DOTFILES/shell/aliases.common")
-assert_contains "$content" 'alias clip=' "aliases.common defines clip"
+# clip is a script on PATH (bin/clip), not an alias. Assert both halves of
+# that: no alias, and no leftover xclip.
 case "$content" in
+*"alias clip="*)
+  fail "aliases.common should not alias clip; bin/clip is on PATH" ;;
 *xclip*) fail "aliases.common still references xclip" ;;
 esac
+[ -x "$DOTFILES/bin/clip" ] || fail "bin/clip is missing or not executable"
+
 for a in 'alias lg=' 'alias ld=' 'alias rng=' 'alias ll='; do
   assert_contains "$content" "$a" "aliases.common defines $a"
 done
@@ -706,16 +702,9 @@ if [ -S "$HOME/.ssh/auth_sock" ]; then
 fi
 ```
 
-Then edit `shell/aliases.common`: replace the `clip` alias, and append the
-`.local` hook. The two changed regions are:
-
-```sh
-alias clip="clip"   # WRONG — see below
-```
-
-Actually remove the alias entirely: `bin/clip` is symlinked onto `PATH` as
-`~/.local/bin/clip`, so `clip` resolves as a command with no alias needed.
-Delete this line from the file:
+Then edit `shell/aliases.common`. Delete this line — `bin/clip` is symlinked
+onto `PATH` as `~/.local/bin/clip`, so `clip` resolves as a command and needs
+no alias:
 
 ```sh
 alias clip="xclip -selection clipboard"
@@ -729,19 +718,6 @@ Remove the `JAVA_HOME`, `GOPATH`, and `LEFTHOOK` exports too — they moved to
 if [ -f "$HOME/.bash_aliases.local" ]; then
   . "$HOME/.bash_aliases.local"
 fi
-```
-
-The test asserts `alias clip=` is present, which the removal above
-contradicts. Resolve it in favor of the script: change that assertion in
-`tests/test_shell_profiles.sh` to assert the *absence* of an xclip alias and
-the presence of the `bin/clip` script instead:
-
-```bash
-case "$content" in
-*"alias clip="*) fail "aliases.common should not alias clip; bin/clip is on PATH" ;;
-*xclip*) fail "aliases.common still references xclip" ;;
-esac
-[ -x "$DOTFILES/bin/clip" ] || fail "bin/clip is missing or not executable"
 ```
 
 - [ ] **Step 4: Run tests to verify they pass**
@@ -850,7 +826,7 @@ assert_link "$HOME/.profile" "$DOTFILES/shell/profile.common" \
 # --- switching profiles re-points .profile.local ---------------------------
 rm -rf "$HOME"
 mkdir -p "$HOME"
-HOSTNAME=shadowlt bash "$DOTFILES/setup/bootstrap.sh" desktop ||
+HOSTNAME_OVERRIDE=shadowlt bash "$DOTFILES/setup/bootstrap.sh" desktop ||
   fail "bootstrap.sh desktop exited non-zero"
 assert_eq "desktop" "$(cat "$HOME/.dotfiles-profile")" \
   "bootstrap records the desktop profile"
@@ -868,10 +844,9 @@ assert_link "$HOME/.ssh/config.d/agentbox.conf" \
 echo "test_links: ok"
 ```
 
-The desktop half of this test runs on any machine because
-`desktop-links.sh` must take the hostname from `${HOSTNAME_OVERRIDE:-$(hostname)}`
-— see the implementation below. Change the `HOSTNAME=shadowlt` prefix above to
-`HOSTNAME_OVERRIDE=shadowlt`.
+The desktop half of this test runs on any machine because `desktop-links.sh`
+reads the hostname from `${HOSTNAME_OVERRIDE:-$(hostname)}` — see the
+implementation below.
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -1659,11 +1634,11 @@ tmux -L ci kill-server
 # 7. clip emits the right bytes in both tmux states
 ESC=$(printf '\033')
 BEL=$(printf '\a')
-printf 'hello' | env -u WAYLAND_DISPLAY -u TMUX CLIP_TTY=/tmp/bare clip
+printf 'hello' | env -u WAYLAND_DISPLAY -u TMUX CLIP_TTY=/tmp/bare ~/.local/bin/clip
 expected="${ESC}]52;c;aGVsbG8=${BEL}"
 [ "$(cat /tmp/bare)" = "$expected" ] || fail "clip emitted the wrong bare OSC 52"
 
-printf 'hello' | env -u WAYLAND_DISPLAY TMUX=fake CLIP_TTY=/tmp/wrapped clip
+printf 'hello' | env -u WAYLAND_DISPLAY TMUX=fake CLIP_TTY=/tmp/wrapped ~/.local/bin/clip
 expected="${ESC}Ptmux;${ESC}${ESC}]52;c;aGVsbG8=${BEL}${ESC}\\"
 [ "$(cat /tmp/wrapped)" = "$expected" ] ||
   fail "clip emitted the wrong tmux-wrapped OSC 52"
@@ -1678,11 +1653,9 @@ USER
 CONTAINER
 ```
 
-Note assertion 7 relies on `~/.local/bin` being on `PATH`, which
-`profile.common` arranges — but `su - jkurtz -c` above uses a login shell only
-for the outer invocation. Use `bash -lc` for the two `clip` invocations, or
-call `~/.local/bin/clip` by absolute path. Prefer the absolute path: it tests
-the script rather than the PATH wiring, which assertion 2 already covers.
+Assertion 7 calls `~/.local/bin/clip` by absolute path deliberately: it tests
+the script itself rather than the `PATH` wiring, which assertion 2 already
+covers.
 
 - [ ] **Step 2: Run it**
 
@@ -1954,8 +1927,7 @@ are used consistently throughout. `~/.profile.local` is the profile hook in
 every task that touches it; `~/.bash_aliases.local` is sourced by
 `aliases.common` but deliberately never created by a link script.
 
-**Known wart carried into the tasks.** Task 2's test as written contains two
-redundant lines, and Task 3's test asserts `alias clip=` exists while the
-implementation removes it. Both are called out inline with the resolution, so
-the implementer fixes them rather than discovering them as failures. Task 8's
-assertion 7 has a `PATH` caveat, also called out inline with the fix.
+**Consistency of `clip`.** `clip` is a script (`bin/clip`), symlinked to
+`~/.local/bin/clip`, never an alias. Task 3's test asserts the absence of an
+`alias clip=` line, Task 4 asserts the symlink exists, and Task 8 invokes it
+by absolute path. The old `alias clip="xclip ..."` is deleted in Task 3.
