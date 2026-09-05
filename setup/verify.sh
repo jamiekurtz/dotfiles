@@ -2,7 +2,7 @@
 # Syntax-check every script in the repo, and shellcheck them when available.
 set -uo pipefail
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$DOTFILES"
+cd "$DOTFILES" || exit
 
 status=0
 

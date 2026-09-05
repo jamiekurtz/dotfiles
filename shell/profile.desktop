@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # Desktop profile — sway workstation.
 # Sourced from ~/.profile via the ~/.profile.local symlink.
 

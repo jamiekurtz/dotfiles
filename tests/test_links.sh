@@ -27,15 +27,15 @@ assert_eq "server" "$(cat "$HOME/.dotfiles-profile")" \
   "bootstrap records the chosen profile"
 
 assert_link "$HOME/.profile" "$DOTFILES/shell/profile.common" \
-  "~/.profile links to profile.common"
+  "$HOME/.profile links to profile.common"
 assert_link "$HOME/.profile.local" "$DOTFILES/shell/profile.server" \
-  "~/.profile.local links to profile.server"
+  "$HOME/.profile.local links to profile.server"
 assert_link "$HOME/.bash_aliases" "$DOTFILES/shell/aliases.common" \
-  "~/.bash_aliases links to aliases.common"
+  "$HOME/.bash_aliases links to aliases.common"
 assert_link "$HOME/.gitconfig" "$DOTFILES/.gitconfig" \
-  "~/.gitconfig is linked"
+  "$HOME/.gitconfig is linked"
 assert_link "$HOME/.tmux.conf" "$DOTFILES/.tmux.conf" \
-  "~/.tmux.conf is linked"
+  "$HOME/.tmux.conf is linked"
 assert_link "$HOME/.local/bin/clip" "$DOTFILES/bin/clip" \
   "clip is on PATH"
 assert_link "$HOME/.config/nvim/init.lua" "$DOTFILES/nvim/init.lua" \

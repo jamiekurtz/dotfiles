@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Assertion helpers for the dotfiles shell tests.
 # Source this; do not execute it.
 

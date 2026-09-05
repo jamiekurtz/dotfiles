@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 # ~/.profile — executed by the command interpreter for login shells.
 # Symlinked from ~/wd/dotfiles/shell/profile.common.
 #

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run every tests/test_*.sh. Exit non-zero if any fails.
 set -uo pipefail
-cd "$(dirname "${BASH_SOURCE[0]}")"
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit
 
 failed=0
 for t in test_*.sh; do
