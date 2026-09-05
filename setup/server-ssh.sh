@@ -42,8 +42,7 @@ if ! grep -qs "$KEY" "$HOME/.ssh/config"; then
   cat >>"$HOME/.ssh/config" <<EOF
 
 Host github.com
-  IdentityFile $KEY
-  IdentitiesOnly yes
+  IdentityFile "$KEY"
 EOF
   echo "Added a github.com block to ~/.ssh/config"
 fi

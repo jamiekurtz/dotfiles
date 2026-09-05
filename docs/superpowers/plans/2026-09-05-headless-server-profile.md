@@ -1514,8 +1514,7 @@ if ! grep -qs "$KEY" "$HOME/.ssh/config"; then
   cat >>"$HOME/.ssh/config" <<EOF
 
 Host github.com
-  IdentityFile $KEY
-  IdentitiesOnly yes
+  IdentityFile "$KEY"
 EOF
   echo "Added a github.com block to ~/.ssh/config"
 fi
@@ -1527,9 +1526,14 @@ cat "$KEY.pub"
 echo
 ```
 
-Note `IdentitiesOnly yes`: without it, ssh offers every key the forwarded
-agent holds before this one and can trip GitHub's authentication-attempt
-limit.
+RULING R12: no `IdentitiesOnly yes` here. Per ssh_config(5), that directive
+restricts authentication to configured identity *files*, even when the agent
+offers more identities -- and a forwarded agent's keys are not files. Adding
+it would silently stop `git push` from using the forwarded agent that
+shell/profile.server works to keep alive, the moment `--generate-key` is run
+-- exactly what the readme promises still works. Without it, ssh tries the
+forwarded agent's identities first and falls through to this file, which is
+the precedence the spec and readme describe.
 
 - [ ] **Step 3: Verify**
 
