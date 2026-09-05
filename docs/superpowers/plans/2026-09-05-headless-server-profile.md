@@ -1093,7 +1093,12 @@ Append to `.tmux.conf`:
 # a headless server over ssh, with no X forwarding and no daemon.
 # foot supports OSC 52 too, so this is equally correct on the workstations.
 set -g set-clipboard on
-set -as terminal-features ',*:clipboard'
+# -a appends, and `bind r` below reloads this file on demand, so guard the
+# append -- otherwise each reload adds another '*:clipboard' entry. The
+# pattern requires a preceding space/line-start so it does not false-match
+# tmux's built-in "xterm*:clipboard:..." default entry.
+if-shell '! tmux show -g terminal-features | grep -qE "(^| )\\*:clipboard($|:)"' \
+  'set -as terminal-features ",*:clipboard"'
 
 # Let applications (bin/clip, neovim) send their own OSC 52 through tmux.
 set -g allow-passthrough on
@@ -1126,10 +1131,10 @@ if vim.env.SSH_TTY then
     },
     paste = {
       ["+"] = function()
-        return vim.fn.split(vim.fn.getreg(""), "\n")
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
       end,
       ["*"] = function()
-        return vim.fn.split(vim.fn.getreg(""), "\n")
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
       end,
     },
   }

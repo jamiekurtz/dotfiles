@@ -57,10 +57,10 @@ if vim.env.SSH_TTY then
     },
     paste = {
       ["+"] = function()
-        return vim.fn.split(vim.fn.getreg(""), "\n")
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
       end,
       ["*"] = function()
-        return vim.fn.split(vim.fn.getreg(""), "\n")
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
       end,
     },
   }
