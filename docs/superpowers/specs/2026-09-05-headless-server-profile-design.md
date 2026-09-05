@@ -305,10 +305,10 @@ already exercised by real use). Asserts:
 2. Every symlink under `$HOME` created by the run resolves to an existing file.
 3. `bash -lc 'echo $BROWSER'` prints `echo`.
 4. `bash -lc 'echo $SSH_AUTH_SOCK'` does not error with no agent present.
-4b. `bash -lc 'echo $LANG'` prints a UTF-8 locale.
-5. `tmux -f .tmux.conf new-session -d` starts and `tmux show -g set-clipboard`
+5. `bash -lc 'echo $LANG'` prints a UTF-8 locale.
+6. `tmux -f .tmux.conf new-session -d` starts and `tmux show -g set-clipboard`
    reports `on`.
-6. `bin/clip` with `TMUX` set and unset emits the expected byte sequences.
+7. `bin/clip` with `TMUX` set and unset emits the expected byte sequences.
 
 This gives evidence the server profile works before an EC2 instance exists.
 
