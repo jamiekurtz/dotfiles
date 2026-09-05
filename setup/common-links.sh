@@ -1,7 +1,7 @@
 #!/bin/bash
 # Symlinks both profiles need.
 set -euo pipefail
-DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+DOTFILES="${DOTFILES:-$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)}"
 
 mkdir -p "$HOME/.local/bin" "$HOME/.config/nvim/lua/plugins"
 

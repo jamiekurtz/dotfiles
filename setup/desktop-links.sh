@@ -1,7 +1,7 @@
 #!/bin/bash
 # Symlinks only the sway workstation profile needs.
 set -euo pipefail
-DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+DOTFILES="${DOTFILES:-$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)}"
 
 mkdir -p \
   "$HOME/.config/sway" "$HOME/.config/foot" "$HOME/.config/mako" \
@@ -9,6 +9,7 @@ mkdir -p \
   "$HOME/.config/xdg-desktop-portal" "$HOME/.local/bin" \
   "$HOME/.ssh/config.d"
 chmod 700 "$HOME/.ssh"
+chmod 700 "$HOME/.ssh/config.d"
 
 ln -sfn "$DOTFILES/shell/profile.desktop" "$HOME/.profile.local"
 
@@ -44,12 +45,16 @@ esac
 # Screen sharing (Slack, Zoom) portals.
 ln -sfn "$DOTFILES/xdg-desktop-portal/sway-portals.conf" \
   "$HOME/.config/xdg-desktop-portal/sway-portals.conf"
-# Only restart the portals if a sway session is actually running here -- this
-# script also runs under the test suite (with $HOME pointed at a temp dir),
-# and pkill is not $HOME-scoped, so an unconditional restart could kill a
-# real, live session's screen-sharing portals. On a fresh install sway isn't
-# running yet either, and the portals start correctly with it regardless.
-# pkill exits 1 when nothing matched, which set -e would treat as fatal.
-if [ -n "${SWAYSOCK:-}" ]; then
+# Only restart the portals when BOTH a live sway session exists AND we are
+# linking into the invoking user's real login home -- not an overridden one.
+# SWAYSOCK alone is not enough: the test suite is naturally run from a foot
+# terminal inside a real sway session (so SWAYSOCK is set there too) while
+# overriding $HOME to a temp dir, and pkill is not $HOME-scoped. Without the
+# real_home check, running the tests on a live workstation would kill the
+# user's own running portals mid-session -- exactly what this gate exists to
+# prevent. Do not simplify this back to just the SWAYSOCK check.
+real_home="$(getent passwd "$(id -un)" | cut -d: -f6)"
+if [ -n "${SWAYSOCK:-}" ] && [ "$HOME" = "$real_home" ]; then
+  # pkill exits 1 when nothing matched, which set -e would treat as fatal.
   pkill -f xdg-desktop-portal || true
 fi

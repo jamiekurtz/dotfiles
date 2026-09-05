@@ -2,7 +2,7 @@
 # Symlink the dotfiles for one profile. Package installation is separate.
 set -euo pipefail
 
-DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DOTFILES="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
 export DOTFILES
 
 usage() {
