@@ -67,6 +67,12 @@ if [ "$(hostname)" = "shadowlt" ]; then
   echo "firmware installed -- reboot when convenient."
 fi
 
+# --- media viewing -------------------------------------------------
+sudo apt install zathura zathura-pdf-poppler imv mpv
+xdg-mime default org.pwmt.zathura.desktop application/pdf
+xdg-mime default imv.desktop image/png image/jpeg
+xdg-mime default mpv.desktop video/mp4 video/x-matroska
+
 echo
 echo "desktop packages installed. See docs/desktop-notes.md for the"
 echo "AWS Client VPN DNS fix, power management, and Slack screen sharing."
