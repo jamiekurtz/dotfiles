@@ -61,11 +61,6 @@ curl -fsSL https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_amd64.d
 sudo dpkg -i "$HOME/Downloads/awsvpnclient_amd64.deb" || sudo apt install -yf
 sudo systemctl --now enable awsvpnclient
 
-# --- dbeaver -------------------------------------------------------------
-wget -qO "$HOME/Downloads/dbeaver-ce.deb" \
-  https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb
-sudo apt install -y "$HOME/Downloads/dbeaver-ce.deb"
-
 # --- p14 laptop firmware -------------------------------------------------
 if [ "$(hostname)" = "shadowlt" ]; then
   sudo apt install -y firmware-atheros firmware-misc-nonfree
