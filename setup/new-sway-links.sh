@@ -25,3 +25,9 @@ esac
 mkdir -p ~/.config/nvim/lua/plugins
 ln -sf $DOTFILES/nvim/init.lua ~/.config/nvim/init.lua
 ln -sf $DOTFILES/nvim/lua/plugins/blink.lua ~/.config/nvim/lua/plugins/blink.lua
+
+# config for screen sharing (e.g. Slack, Zoom)
+mkdir -p ~/.config/xdg-desktop-portal
+ln -sf $DOTFILES/xdg-desktop-portal/sway-portals.conf ~/.config/xdg-desktop-portal/sway-portals.conf
+pkill -f xdg-desktop-portal
+pkill -f xdg-desktop-portal-wlr

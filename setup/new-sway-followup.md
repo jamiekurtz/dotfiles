@@ -38,3 +38,21 @@ sudo apt install power-profiles-daemon
 powerprofilesctl list
 powerprofilesctl set power-saver  # or balanced or performance
 ```
+
+## Slack screen sharing
+
+After installing Slack (e.g. using their official Debian package), you need to update
+the associated shortcut as follows:
+
+```
+cp /usr/share/applications/slack.desktop ~/.local/share/applications
+vim ~/.local/share/applications/slack.desktop
+```
+
+Insert the following pipewire argument into the Exec line to make it look like:
+
+```
+Exec=/usr/bin/slack --enable-features=WebRTCPipeWireCapturer %U
+```
+
+

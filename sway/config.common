@@ -10,6 +10,7 @@ set $mod Mod4
 font pango:JetBrainsMono Nerd Font 10
 
 # --- Autostart -----------------------------------------------------------
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec dbus-update-activation-environment --systemd \
     WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
