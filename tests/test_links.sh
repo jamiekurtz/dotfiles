@@ -74,7 +74,23 @@ assert_link "$HOME/.config/foot/foot.ini" "$DOTFILES/foot/foot.ini" \
   "foot.ini is linked"
 assert_link "$HOME/.local/bin/swaycwd" "$DOTFILES/bin/swaycwd" \
   "swaycwd is linked on the desktop profile"
-assert_link "$HOME/.ssh/config.d/agentbox.conf" \
-  "$DOTFILES/ssh/agentbox.conf" "the agentbox ssh entry is linked"
+[ -f "$HOME/.ssh/config.d/agentbox.conf" ] ||
+  fail "the agentbox ssh entry is not a regular file"
+[ -L "$HOME/.ssh/config.d/agentbox.conf" ] &&
+  fail "the agentbox ssh entry should be a copy, not a symlink"
+assert_eq "$(cat "$DOTFILES/ssh/agentbox.conf.template")" \
+  "$(cat "$HOME/.ssh/config.d/agentbox.conf")" \
+  "the agentbox ssh entry starts out matching the template"
+assert_eq "600" "$(stat -c %a "$HOME/.ssh/config.d/agentbox.conf")" \
+  "the agentbox ssh entry copy is mode 600"
+
+# --- re-running bootstrap must not clobber an edited agentbox.conf ---------
+echo "Host agentbox
+  HostName agentbox.example.ts.net" >"$HOME/.ssh/config.d/agentbox.conf"
+HOSTNAME_OVERRIDE=shadowlt bash "$DOTFILES/setup/bootstrap.sh" desktop ||
+  fail "bootstrap.sh desktop (re-run) exited non-zero"
+assert_contains "$(cat "$HOME/.ssh/config.d/agentbox.conf")" \
+  "agentbox.example.ts.net" \
+  "re-running bootstrap does not clobber an edited agentbox.conf"
 
 echo "test_links: ok"

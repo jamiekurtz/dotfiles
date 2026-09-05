@@ -23,11 +23,20 @@ ln -sfn "$DOTFILES/bin/swaycwd" "$HOME/.local/bin/swaycwd"
 
 # Client-side ssh entry for the EC2 agent box. Never rewrite the user's own
 # ~/.ssh/config -- drop a fragment in and tell them how to include it.
-ln -sfn "$DOTFILES/ssh/agentbox.conf" "$HOME/.ssh/config.d/agentbox.conf"
+#
+# This is a COPY, not a symlink: the repo ships a CHANGEME template and the
+# user edits their own copy in place (the real HostName, once known). A
+# symlink here would mean editing the template edits the tracked file,
+# leaving the repo permanently dirty. Never overwrite an existing copy --
+# the user's edits must survive re-running bootstrap.
+if [ ! -e "$HOME/.ssh/config.d/agentbox.conf" ]; then
+  cp "$DOTFILES/ssh/agentbox.conf.template" "$HOME/.ssh/config.d/agentbox.conf"
+  chmod 600 "$HOME/.ssh/config.d/agentbox.conf"
+fi
 if [ -f "$HOME/.ssh/config" ] && ! grep -q 'Include config.d/\*' "$HOME/.ssh/config"; then
   cat <<'EOF'
 
-NOTE: add this as the FIRST line of ~/.ssh/config to pick up ssh/agentbox.conf:
+NOTE: add this as the FIRST line of ~/.ssh/config to pick up ~/.ssh/config.d/agentbox.conf:
 
   Include config.d/*
 

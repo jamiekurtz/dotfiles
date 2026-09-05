@@ -60,18 +60,20 @@ cd ~/wd/dotfiles
 machine you are sitting at. `TS_AUTHKEY=tskey-auth-... ./setup/server-tailscale.sh`
 does it unattended.
 
-Then on your workstation, edit `ssh/agentbox.conf` in this repo and replace
-the `CHANGEME` placeholder in the `HostName` line with the box's MagicDNS
-name — run `tailscale status` on either machine to find it. Add this as the
-**first** line of `~/.ssh/config`:
+Then on your workstation, edit `~/.ssh/config.d/agentbox.conf` — your own
+copy, not the repo's template — and replace the `CHANGEME` placeholder in
+the `HostName` line with the box's MagicDNS name — run `tailscale status` on
+either machine to find it. Add this as the **first** line of
+`~/.ssh/config`:
 
 ```
 Include config.d/*
 ```
 
-(`setup/desktop-links.sh` already links `ssh/agentbox.conf` to
-`~/.ssh/config.d/agentbox.conf`; it prints this same reminder if your
-`~/.ssh/config` doesn't already have the `Include` line.)
+(`setup/desktop-links.sh` copies the repo's `ssh/agentbox.conf.template` to
+`~/.ssh/config.d/agentbox.conf` the first time it runs, and never touches
+that copy again, so your edits survive re-running bootstrap. It prints the
+`Include` reminder above if your `~/.ssh/config` doesn't already have it.)
 
 `ssh agentbox` then works from anywhere on the tailnet, with your SSH agent
 forwarded.
@@ -129,9 +131,12 @@ since those won't be exercised by the test.
 shell/     profile.common + profile.desktop/server, aliases.common
 bin/       clip (both profiles), swaycwd (desktop)
 setup/     bootstrap.sh + per-profile package and link scripts
-ssh/       agentbox.conf, the client-side Host entry
-sway/ foot/ mako/ swappy/ i3status/ i3/ picom/   desktop config
+ssh/       agentbox.conf.template, the client-side Host entry (copied, not linked)
+sway/ foot/ mako/ swappy/ i3status/   desktop config
 nvim/      init.lua + plugin overrides
 tests/     shell test suite
 docs/      desktop notes, specs, plans
 ```
+
+`i3/` and `picom/` are legacy from the pre-sway setup. They are still
+tracked but linked by no profile.

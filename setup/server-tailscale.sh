@@ -26,4 +26,4 @@ fi
 echo
 tailscale status
 echo
-echo "Add the MagicDNS name above to ssh/agentbox.conf on your workstation."
+echo "Add the MagicDNS name above to ~/.ssh/config.d/agentbox.conf on your workstation."
