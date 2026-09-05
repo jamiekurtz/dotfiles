@@ -25,9 +25,16 @@ EOF
 mkdir -p "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
 
-if [ -f "$KEY" ]; then
+if [ -f "$KEY" ] && [ -f "$KEY.pub" ]; then
   echo "$KEY already exists, leaving it alone."
+elif [ -f "$KEY" ]; then
+  echo "$KEY exists but $KEY.pub is missing." >&2
+  echo "Regenerating the public half from the private key -- this is lossless and does not invalidate anything already registered with GitHub." >&2
+  ssh-keygen -y -f "$KEY" > "$KEY.pub"
 else
+  if [ -f "$KEY.pub" ]; then
+    echo "$KEY.pub exists but $KEY does not -- the key previously registered at https://github.com/settings/keys is now orphaned. Generating a new keypair; you will need to add the new public key at https://github.com/settings/keys and remove the old one." >&2
+  fi
   ssh-keygen -t ed25519 -N "" -f "$KEY" -C "agentbox-$(hostname -s)"
 fi
 
