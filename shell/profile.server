@@ -1,0 +1,34 @@
+# shellcheck shell=sh
+# Server profile — headless Debian 13 (EC2).
+# Sourced from ~/.profile via the ~/.profile.local symlink.
+
+# There is no browser here. OAuth device flows (Claude Code, gh auth login,
+# tailscale up) honor $BROWSER, so `echo` makes them print the URL into the
+# terminal for you to open on whatever machine you are sitting at.
+export BROWSER=echo
+
+# Debian cloud images frequently boot with LANG unset, which turns Nerd Font
+# glyphs and box-drawing characters into mojibake in neovim and lazygit.
+# Leave an existing UTF-8 locale alone.
+case "${LANG:-}" in
+*UTF-8 | *utf8 | *UTF8) ;;
+*) export LANG=en_US.UTF-8 ;;
+esac
+
+# A forwarded SSH agent gets a fresh socket path on every connection, so a
+# long-lived tmux pane ends up holding a dead one and git push starts failing
+# after a reconnect. Keep a stable symlink and export that instead: each new
+# login re-points the symlink, and existing panes recover on their own.
+if [ -n "${SSH_AUTH_SOCK:-}" ] &&
+  [ -S "$SSH_AUTH_SOCK" ] &&
+  [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/auth_sock" ]; then
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
+  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/auth_sock"
+fi
+
+# Only export it if it actually resolves — a dangling symlink here makes every
+# ssh and git command hang on a socket that will never answer.
+if [ -S "$HOME/.ssh/auth_sock" ]; then
+  export SSH_AUTH_SOCK="$HOME/.ssh/auth_sock"
+fi

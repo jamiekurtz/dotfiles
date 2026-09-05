@@ -1,0 +1,39 @@
+# shellcheck shell=bash
+alias bc="bc -l"
+function psg() { ps ax | grep "$@"; }
+
+alias vim="nvim"
+alias lg="lazygit"
+alias ll='ls -al'
+alias ld="lazydocker"
+alias rng="ranger"
+
+# bind -r '\C-s'
+# stty -ixon
+
+# http://ezprompt.net/
+# https://mary.codes/blog/programming/displaying-git-branch-in-linux-terminal/
+PS1="\[\033[01;36m\]\w\[\033[01;33m\]\$(__git_ps1)\[\033[01;32m\]\$\[\033[00m\] "
+
+#function gd() {
+#  f=$(mktemp).patch
+#  git diff $1 >$f
+#  /opt/google/chrome/google-chrome $f
+#}
+
+function git-clean-feature { git branch | grep "feature/" | xargs git branch -D -; }
+# shellcheck disable=SC2164 # interactive shortcut: a failed cd should just leave the shell where it was, not exit it
+function cdfirm() { cd ~/wd/firm360; }
+# shellcheck disable=SC2164
+function cdtau() { cd ~/wd/firm360/tau; }
+
+function whatsmyip() { curl -w "\n" ipinfo.io/ip; }
+
+function gd() { comm -23 <(git log --pretty=format:"%s" --no-merges $(git branch --show-current) | sort -u) <(git log --pretty=format:"%s" --no-merges $1 | sort -u); }
+function git-diff-master() { git diff master...HEAD; }
+function git-diff-develop() { git diff develop...HEAD; }
+
+# Profile-specific aliases, if this machine ever needs any.
+if [ -f "$HOME/.bash_aliases.local" ]; then
+  . "$HOME/.bash_aliases.local"
+fi

@@ -1,0 +1,30 @@
+#!/bin/sh
+# Copy stdin to the clipboard, whichever clipboard is actually reachable.
+#
+#   Wayland session present -> wl-copy, the real local clipboard.
+#   Otherwise (i.e. over SSH) -> an OSC 52 escape sequence written to the
+#   terminal, which puts the text on the clipboard of whatever machine is
+#   drawing the pixels. No X forwarding, no daemon.
+#
+# Inside tmux a bare OSC 52 is swallowed, so it is wrapped in tmux's DCS
+# passthrough with every inner ESC byte doubled.
+#
+# CLIP_TTY overrides the output device; it exists so the escape-sequence
+# behavior can be tested without a terminal.
+set -eu
+
+input=$(cat)
+
+if [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-copy >/dev/null 2>&1; then
+  printf '%s' "$input" | wl-copy
+  exit 0
+fi
+
+payload=$(printf '%s' "$input" | base64 | tr -d '\n')
+tty_out="${CLIP_TTY:-/dev/tty}"
+
+if [ -n "${TMUX:-}" ]; then
+  printf '\033Ptmux;\033\033]52;c;%s\a\033\\' "$payload" >"$tty_out"
+else
+  printf '\033]52;c;%s\a' "$payload" >"$tty_out"
+fi

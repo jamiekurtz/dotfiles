@@ -1,3 +1,7 @@
+# Desktop Follow-Up Notes
+
+Things that need doing by hand on a sway workstation after
+`setup/desktop-packages.sh`. None of this applies to the server profile.
 
 ## Fixing SSO on AWS Client VPN
 

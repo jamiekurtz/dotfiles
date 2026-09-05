@@ -32,3 +32,36 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.softtabstop = 0
   end,
 })
+
+-- Emit Nerd Font glyphs. The font itself is only needed on the machine
+-- drawing the pixels, never on a remote server -- neovim just sends the
+-- codepoints and the local terminal resolves them.
+vim.g.have_nerd_font = true
+
+-- Over ssh there is no local clipboard to talk to, so route yanks through
+-- OSC 52 and let the terminal put them on the clipboard of whatever machine
+-- you are actually sitting at. On the workstations this block is skipped and
+-- the normal wl-copy provider is used.
+--
+-- Paste is deliberately served from the unnamed register rather than read
+-- back over OSC 52: most terminals refuse clipboard *reads* for security
+-- reasons, so a read-based provider would just hang. Paste into the server
+-- with the terminal's own paste instead.
+if vim.env.SSH_TTY then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name = "OSC52",
+    copy = {
+      ["+"] = osc52.copy("+"),
+      ["*"] = osc52.copy("*"),
+    },
+    paste = {
+      ["+"] = function()
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+      end,
+      ["*"] = function()
+        return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+      end,
+    },
+  }
+end

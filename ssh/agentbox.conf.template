@@ -1,0 +1,16 @@
+# TEMPLATE. Client-side entry for the headless EC2 agent box, reached over
+# Tailscale. setup/desktop-links.sh COPIES this file to
+# ~/.ssh/config.d/agentbox.conf the first time it runs, and never touches
+# that copy again -- edit your copy, not this template, so your edits
+# survive re-running bootstrap and never dirty the repo.
+# Requires `Include config.d/*` as the first line of ~/.ssh/config.
+#
+# Replace the HostName with the box's MagicDNS name once `tailscale up` has
+# run there: `tailscale status` on either machine will show it.
+
+Host agentbox
+  HostName agentbox.CHANGEME.ts.net
+  User jkurtz
+  ForwardAgent yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 6
