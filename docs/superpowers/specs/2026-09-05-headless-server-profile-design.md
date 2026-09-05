@@ -36,7 +36,7 @@ dotfiles/
   .tmux.conf                      profile-neutral, stays at root
   shell/
     profile.common   profile.desktop   profile.server
-    aliases.common   aliases.desktop   aliases.server
+    aliases.common
   bin/
     swaycwd                       desktop only
     clip                          both profiles
@@ -93,7 +93,6 @@ sense: `desktop-links.sh` picks the per-host sway config for `shadowws` vs
 | link | target |
 |---|---|
 | `~/.profile.local` | `shell/profile.<profile>` |
-| `~/.bash_aliases.local` | `shell/aliases.<profile>` |
 
 Each common file ends by sourcing its `.local` counterpart if present, so the
 common file never has to resolve the repo path:
@@ -109,23 +108,43 @@ so these are shared.
 **`profile.desktop`** — the `exec sway` block, verbatim, including the
 `~/.no-sway` escape hatch.
 
-**`profile.server`** — `export BROWSER=echo` so OAuth device flows (Claude
-Code, `gh auth login`, `tailscale up`) print their URL instead of failing to
-launch a browser; plus the SSH_AUTH_SOCK stabilization below. No compositor
-launch, so a stray tty login on the server cannot try to start sway.
+**`profile.server`** —
 
-**`aliases.common`** — `bc`, `psg`, `vim`, `ll`, `clip`, `lg` (lazygit and
-docker are common packages), the git helper functions (`git-clean-feature`,
-`gd`, `git-diff-master`, `git-diff-develop`), `whatsmyip`, the `cd*` project
-shortcuts, `mongotools`, `rc-run`, and `PS1`.
+- `export BROWSER=echo` so OAuth device flows (Claude Code, `gh auth login`,
+  `tailscale up`) print their URL instead of failing to launch a browser.
+- `export LANG=en_US.UTF-8` / `LC_ALL=en_US.UTF-8`, guarded so an already-set
+  UTF-8 locale is left alone. Debian cloud images frequently boot with `LANG`
+  unset, which renders Nerd Font glyphs and box-drawing characters as
+  mojibake in neovim and lazygit. `server-packages.sh` runs `locale-gen` for
+  that locale so the export is backed by a generated locale.
+- The SSH_AUTH_SOCK stabilization below.
+- No compositor launch, so a stray tty login on the server cannot try to
+  start sway.
 
-**`aliases.desktop`** — `ld` (lazydocker), `rng` (ranger via pipx), and the
-notebook helpers that expect a browser to open: `jup-run`, `prism-run`.
+**Aliases are not split by profile.** Every alias in the current
+`.bash_aliases` is a terminal or docker helper, and both profiles install the
+same terminal toolchain, so a per-profile alias file would be machinery for a
+distinction that does not exist. There is one `shell/aliases.common`, linked to
+`~/.bash_aliases`, holding all of them: `bc`, `psg`, `vim`, `ll`, `clip`, `lg`,
+`ld`, `rng`, `mongotools`, `rc-run`, `jup-run`, `browsy-run`, `py-run`,
+`prism-run`, `ate-run`, `whatsmyip`, the git helpers (`git-clean-feature`,
+`gd`, `git-diff-master`, `git-diff-develop`), the `cd*` project shortcuts, and
+`PS1`.
 
-**`aliases.server`** — the headless-safe docker helpers `browsy-run`,
-`py-run`, `ate-run`. Empty otherwise; the file exists so the symlink target
-is always present and there is an obvious place for future server-only
-additions.
+It still ends with the `.local` hook below, so a profile-specific alias file
+can be added later without restructuring anything:
+
+```sh
+[ -f "$HOME/.bash_aliases.local" ] && . "$HOME/.bash_aliases.local"
+```
+
+`shell/aliases.desktop` and `shell/aliases.server` are not created, and no link
+script creates `~/.bash_aliases.local`.
+
+**Bug found while auditing the aliases:** `ld` is aliased to `lazydocker`, but
+nothing in the repo installs it — the alias is broken on both existing
+machines. `common-packages.sh` gains a `go install
+github.com/jesseduffield/lazydocker@latest`, matching the lazygit pattern.
 
 ## Clipboard over tmux and SSH
 
@@ -160,6 +179,9 @@ end
 Paste-back over OSC 52 is deliberately not wired up: most terminals refuse
 clipboard *reads* for security reasons. Pasting into the server uses the
 terminal's own paste, which works normally.
+
+`init.lua` also sets `vim.g.have_nerd_font = true` unconditionally, so neovim
+emits Nerd Font glyphs on both profiles.
 
 **`bin/clip`** — replaces the current `alias clip="xclip -selection clipboard"`,
 which is broken today (the desktops run Wayland, not X). The script reads
@@ -218,7 +240,7 @@ rewrites an existing `~/.ssh/config`; it prints a one-line instruction to add
 - apt: `git git-flow tmux curl wget jq gron tree zip unzip ripgrep btop make gpg
   bash-completion pipx golang ca-certificates gnupg`
 - neovim from the upstream tarball into `/opt`, plus LazyVim starter
-- `lazygit` via `go install`
+- `lazygit` and `lazydocker` via `go install`
 - nvm + Node 24
 - Zulu 21 JDK, with the `/usr/lib/jvm/default` symlink
 - Docker CE + compose plugin, `usermod -aG docker`
@@ -234,7 +256,16 @@ fonts-dejavu, firefox-esr, thunar, gsimplecal, kdiff3, ranger, JetBrains Mono
 Nerd Font, 1Password, DBeaver, Resilio Sync, AWS VPN Client, and the
 `firmware-atheros firmware-misc-nonfree` P14 extras (guarded by hostname).
 
-**`server-packages.sh`** — `tailscale`, `mosh`.
+**`server-packages.sh`** — `tailscale`, `mosh`, and `locales` plus a
+`locale-gen en_US.UTF-8` to back the locale export in `profile.server`.
+
+**Nerd fonts stay desktop-only.** Glyph rasterization happens entirely in the
+terminal drawing the pixels. Neovim on the server emits Nerd Font *codepoints*
+over the wire; the local terminal — foot on the workstation, or whatever herdr
+renders into — resolves them against its own fontconfig. Installing JetBrains
+Mono NF on the server would consume disk and change nothing, because nothing
+server-side rasterizes text. What the server does need is `have_nerd_font` set
+in neovim and a UTF-8 locale, both covered above.
 
 Two bugs carried in the current script are fixed during the move:
 
@@ -246,18 +277,18 @@ Two bugs carried in the current script are fixed during the move:
 
 ## Link scripts
 
-**`common-links.sh`** — `.gitconfig`, `.tmux.conf`, `shell/profile.common`,
-`shell/aliases.common`, `nvim/init.lua`, `nvim/lua/plugins/blink.lua`,
+**`common-links.sh`** — `.gitconfig`, `.tmux.conf`, `shell/profile.common`
+(to `~/.profile`), `shell/aliases.common` (to `~/.bash_aliases`), `nvim/init.lua`, `nvim/lua/plugins/blink.lua`,
 `bin/clip`.
 
 **`desktop-links.sh`** — `sway/config.common`, `sway/config.d`, the per-host
 `sway/config-for-*` selection, `foot/foot.ini`, `mako/config`, `swappy/config`,
 `i3status/config`, `bin/swaycwd`, `xdg-desktop-portal/sway-portals.conf` (plus
-the portal `pkill` restart), `~/.profile.local`, `~/.bash_aliases.local`,
+the portal `pkill` restart), `~/.profile.local`, and
 `~/.ssh/config.d/agentbox.conf`.
 
-**`server-links.sh`** — `~/.profile.local`, `~/.bash_aliases.local`, and
-`mkdir -p ~/.ssh` with correct `0700` permissions.
+**`server-links.sh`** — `~/.profile.local`, and `mkdir -p ~/.ssh` with correct
+`0700` permissions.
 
 All scripts use `ln -sfn` and `mkdir -p`, and are safe to re-run.
 
@@ -274,6 +305,7 @@ already exercised by real use). Asserts:
 2. Every symlink under `$HOME` created by the run resolves to an existing file.
 3. `bash -lc 'echo $BROWSER'` prints `echo`.
 4. `bash -lc 'echo $SSH_AUTH_SOCK'` does not error with no agent present.
+4b. `bash -lc 'echo $LANG'` prints a UTF-8 locale.
 5. `tmux -f .tmux.conf new-session -d` starts and `tmux show -g set-clipboard`
    reports `on`.
 6. `bin/clip` with `TMUX` set and unset emits the expected byte sequences.
