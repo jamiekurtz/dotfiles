@@ -1331,9 +1331,10 @@ sudo apt install -y 1password
 
 # --- resilio sync --------------------------------------------------------
 mkdir -p "$HOME/Downloads" "$HOME/MyApps/resilio-sync"
-wget -qP "$HOME/Downloads" \
+wget -qO "$HOME/Downloads/resilio-sync_x64.tar.gz" \
   https://download-cdn.resilio.com/stable/linux/x64/0/resilio-sync_x64.tar.gz
 tar -xzf "$HOME/Downloads/resilio-sync_x64.tar.gz" -C "$HOME/MyApps/resilio-sync/"
+rm "$HOME/Downloads/resilio-sync_x64.tar.gz"
 
 # --- aws vpn client ------------------------------------------------------
 # NOTE: the original script doubled the filename here, so the dpkg below could
