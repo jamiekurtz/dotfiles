@@ -61,7 +61,7 @@ than X forwarding.
 | `setup/server-ssh.sh` | Opt-in `--generate-key` for unattended git pushes. |
 | `setup/verify.sh` | `bash -n` + shellcheck over all scripts. |
 | `setup/test-in-docker.sh` | Runs the server profile inside `debian:13`. |
-| `ssh/agentbox.conf` | Client-side `Host agentbox` entry. |
+| `ssh/agentbox.conf.template` | Client-side `Host agentbox` entry, copied (not linked) to `~/.ssh/config.d/agentbox.conf`. |
 | `docs/desktop-notes.md` | Former `setup/new-sway-followup.md`. |
 
 **Deviations from the spec, both deliberate:**
@@ -74,6 +74,14 @@ than X forwarding.
    moves it to `docs/desktop-notes.md` and links it from `readme.md` instead,
    so the readme stays a getting-started document rather than absorbing three
    pages of desktop troubleshooting.
+3. The spec says twice that `aliases.common` defines a `clip` alias. This
+   plan instead ships `bin/clip` on `PATH` for both profiles and defines no
+   alias. A real executable works from non-interactive shells and scripts
+   (e.g. piped into from another program) where an alias would not, and it
+   is linked identically by both link scripts rather than living inside the
+   one file the spec keeps calling bash-only. The alias name still works
+   for interactive use; nothing is lost, and the deviation was not recorded
+   until this review caught it.
 
 ---
 
@@ -1923,10 +1931,10 @@ Tasks 3/4/6/9; profile selection → Task 4; shell split → Task 3; clipboard �
 Tasks 2 and 5; transport, agent, and git credentials → Tasks 3 (agent socket)
 and 7 (Tailscale, keys, `agentbox.conf` in Task 4); package split → Task 6;
 link scripts → Task 4; verification → Tasks 1, 8, and 10; documentation →
-Task 9. The two spec deviations are stated at the top of the File Structure
+Task 9. The three spec deviations are stated at the top of the File Structure
 section with reasons.
 
-**Placeholders.** None. `CHANGEME` appears once, in `ssh/agentbox.conf`, where
+**Placeholders.** None. `CHANGEME` appears once, in `ssh/agentbox.conf.template`, where
 it is the intended value — the MagicDNS name does not exist until
 `tailscale up` has run, and the readme says to fill it in.
 
