@@ -211,10 +211,30 @@ Installed from the client. Nothing is needed on the server for it.
 
 ## Upgrading an existing machine
 
-`docs/migration-notes.md` lists the pulls that need manual steps. A pull that
-moves a symlink target can leave `~/.profile` dangling, which fails silently
-until your next login — check there before pulling on a machine that was
-configured from an older revision of this repo.
+Always re-run bootstrap after pulling, on whichever profile the machine uses:
+
+```
+cd ~/wd/dotfiles
+git pull
+./setup/bootstrap.sh server    # or desktop
+exec bash -l
+```
+
+`bootstrap.sh` is idempotent and only re-points symlinks — no packages, no
+Tailscale — so re-running it costs nothing. It is not optional, though: a pull
+that adds a *new* symlink (a new file under `shell/`, `nvim/`, or `bin/`)
+leaves that file sitting in the repo with nothing pointing at it. Nothing
+dangles and nothing errors; the feature is simply absent until the linking
+script runs again.
+
+`exec bash -l` because a running shell keeps the environment and PS1 it was
+born with. Note that a reattached tmux session does *not* give you new shells:
+open a new window with `prefix c`, or reload one pane with `. ~/.bash_aliases`.
+
+`docs/migration-notes.md` lists the pulls that need manual steps beyond that.
+The opposite failure also exists: a pull that *moves* a symlink target can
+leave `~/.profile` dangling, which fails silently until your next login —
+check there before pulling on a machine configured from an older revision.
 
 ## Tests
 
