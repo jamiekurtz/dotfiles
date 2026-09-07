@@ -9,7 +9,7 @@ chmod 700 "$HOME/.ssh"
 ln -sfn "$DOTFILES/shell/profile.server" "$HOME/.profile.local"
 
 # On the server, PS1 and every alias reach the user only because
-# /etc/skel/.bashrc sources ~/.bash_aliases. If this jkurtz user was created
+# /etc/skel/.bashrc sources ~/.bash_aliases. If this user was created
 # by cloud-init without skel (or with a stripped-down one), that link never
 # happens and this script has no way to fix it -- it only owns ~/.bash_aliases
 # itself, not ~/.bashrc. Warn loudly rather than silently shipping a prompt

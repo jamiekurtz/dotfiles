@@ -5,12 +5,19 @@
 # survive re-running bootstrap and never dirty the repo.
 # Requires `Include config.d/*` as the first line of ~/.ssh/config.
 #
-# Replace the HostName with the box's MagicDNS name once `tailscale up` has
-# run there: `tailscale status` on either machine will show it.
+# Two CHANGEME values to replace in your copy:
+#
+#   HostName  the box's MagicDNS name once `tailscale up` has run there:
+#             `tailscale status` on either machine will show it.
+#   User      whatever login the instance was provisioned with. Debian cloud
+#             images default to `admin`; creating a differently-named user is
+#             instance provisioning, not this repo's job. The server-side
+#             setup scripts are username-agnostic, so this line is the only
+#             place the choice has to be recorded.
 
 Host agentbox
   HostName agentbox.CHANGEME.ts.net
-  User jkurtz
+  User CHANGEME
   ForwardAgent yes
   ServerAliveInterval 30
   ServerAliveCountMax 6

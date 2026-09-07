@@ -43,8 +43,11 @@ file to restore it.
 
 ## Server (headless Debian 13 on EC2)
 
-Assumes a `jkurtz` user with sudo already exists — creating it is instance
-provisioning, not this repo's job.
+Assumes a user with sudo already exists — creating it is instance
+provisioning, not this repo's job. The name doesn't matter: every setup script
+derives its paths from `$HOME` and its own location, so `admin` (the Debian
+cloud image default) works as-is. The username is recorded in exactly one
+place, the `User` line of your workstation's `agentbox.conf` (below).
 
 ```
 mkdir -p ~/wd
@@ -63,15 +66,15 @@ does it unattended.
 
 `bootstrap.sh server` warns to stderr if `~/.bashrc` is missing or doesn't
 source `~/.bash_aliases` — this repo only owns `~/.bash_aliases` itself, so
-if the `jkurtz` user was created without `/etc/skel` (common with cloud-init),
+if the user was created without `/etc/skel` (common with cloud-init),
 nothing else will source it and the prompt and aliases will silently never
 load. Follow the warning's instructions if you see it.
 
 Then on your workstation, edit `~/.ssh/config.d/agentbox.conf` — your own
-copy, not the repo's template — and replace the `CHANGEME` placeholder in
-the `HostName` line with the box's MagicDNS name — run `tailscale status` on
-either machine to find it. Add this as the **first** line of
-`~/.ssh/config`:
+copy, not the repo's template — and replace both `CHANGEME` placeholders: the
+one in `HostName` with the box's MagicDNS name (run `tailscale status` on
+either machine to find it), and the one in `User` with the login the instance
+was provisioned with. Add this as the **first** line of `~/.ssh/config`:
 
 ```
 Include config.d/*
