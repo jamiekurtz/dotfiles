@@ -11,10 +11,15 @@ Everything both profiles need — bash, git, tmux, neovim, docker, the language
 runtimes — is shared. `bootstrap.sh` picks which extra set gets linked, but it
 is symlinks only; packages are a separate step below.
 
+`common-packages.sh` installs git, but you need git before that to clone this
+repo at all, so both quickstarts below start by apt-installing it. A fresh
+Debian 13 cloud image has neither git nor a checkout to run scripts from.
+
 ## Desktop
 
 ```
 touch ~/.no-sway  # delete this file when ready to auto-launch sway
+sudo apt update && sudo apt install -y git   # just to clone; scripts handle the rest
 mkdir -p ~/wd
 git clone https://github.com/jamiekurtz/dotfiles.git ~/wd/dotfiles
 cd ~/wd/dotfiles
@@ -50,6 +55,7 @@ cloud image default) works as-is. The username is recorded in exactly one
 place, the `User` line of your workstation's `agentbox.conf` (below).
 
 ```
+sudo apt update && sudo apt install -y git   # just to clone; scripts handle the rest
 mkdir -p ~/wd
 git clone https://github.com/jamiekurtz/dotfiles.git ~/wd/dotfiles
 cd ~/wd/dotfiles
