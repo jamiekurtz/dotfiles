@@ -76,10 +76,30 @@ if the user was created without `/etc/skel` (common with cloud-init),
 nothing else will source it and the prompt and aliases will silently never
 load. Follow the warning's instructions if you see it.
 
-Then on your workstation, edit `~/.ssh/config.d/agentbox.conf` — your own
-copy, not the repo's template — and replace both `CHANGEME` placeholders:
-`User` with the login the instance was provisioned with, and `HostName` with
-one of these three, in increasing order of fuss:
+### Workstation side
+
+The `desktop` profile does not install these — reaching the box needs two
+tools on the machine you sit at, because both are two-ended:
+
+```
+curl -fsSL https://tailscale.com/install.sh | sh   # same installer server-packages.sh uses
+sudo tailscale up                                  # join the SAME tailnet as the box
+sudo apt install -y mosh                           # server-packages.sh only puts mosh on the box
+```
+
+Tailscale is a peer-to-peer mesh, so there is no gateway to route through:
+a device that is not on the tailnet cannot reach one that is. Authenticate
+with the same identity you used on the box — join under a different login and
+the two will never see each other, and `tailscale status` will list only one
+machine.
+
+`mosh` matters here for the reason `server-packages.sh` installs it there: it
+survives a laptop lid close where plain ssh drops. It has to be on both ends.
+
+Then edit `~/.ssh/config.d/agentbox.conf` — your own copy, not the repo's
+template — and replace both `CHANGEME` placeholders: `User` with the login the
+instance was provisioned with, and `HostName` with one of these three, in
+increasing order of fuss:
 
 | `HostName` value | How to get it | Note |
 |---|---|---|
