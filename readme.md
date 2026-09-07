@@ -77,10 +77,22 @@ nothing else will source it and the prompt and aliases will silently never
 load. Follow the warning's instructions if you see it.
 
 Then on your workstation, edit `~/.ssh/config.d/agentbox.conf` — your own
-copy, not the repo's template — and replace both `CHANGEME` placeholders: the
-one in `HostName` with the box's MagicDNS name (run `tailscale status` on
-either machine to find it), and the one in `User` with the login the instance
-was provisioned with. Add this as the **first** line of `~/.ssh/config`:
+copy, not the repo's template — and replace both `CHANGEME` placeholders:
+`User` with the login the instance was provisioned with, and `HostName` with
+one of these three, in increasing order of fuss:
+
+| `HostName` value | How to get it | Note |
+|---|---|---|
+| `agentbox` | the short name, i.e. `hostname -s` on the box | Tailscale puts the tailnet in your DNS search domain, so the bare name normally resolves |
+| `100.64.0.2` | column 1 of `tailscale status` | no DNS dependency; changes if you recreate the instance |
+| `agentbox.tail1a2b3c.ts.net` | `tailscale status --json \| jq -r '.Self.DNSName' \| sed 's/\.$//'` | the real MagicDNS name |
+
+`server-tailscale.sh` prints the third one for you at the end of its run.
+Note that plain `tailscale status` does **not** show the tailnet suffix — only
+the short name and the 100.x IP — so there is nothing in that table to paste
+into the `agentbox.CHANGEME.ts.net` form.
+
+Add this as the **first** line of `~/.ssh/config`:
 
 ```
 Include config.d/*
