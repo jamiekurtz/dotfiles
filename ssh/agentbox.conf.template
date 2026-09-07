@@ -5,22 +5,43 @@
 # survive re-running bootstrap and never dirty the repo.
 # Requires `Include config.d/*` as the first line of ~/.ssh/config.
 #
-# Two CHANGEME values to replace in your copy:
+# NOTE: ssh_config comments must be on their own line. A trailing comment
+# after a directive is not reliably supported and can fail to parse, so keep
+# the notes above the lines they describe rather than beside them.
 #
-#   HostName  the box's MagicDNS name, which server-tailscale.sh prints when
-#             it finishes. Plain `tailscale status` does NOT show the tailnet
-#             suffix, only the short name and the 100.x IP; the full name is
-#             `tailscale status --json | jq -r .Self.DNSName`. The bare short
-#             name and the 100.x IP both work here too -- see the readme.
-#   User      whatever login the instance was provisioned with. Debian cloud
-#             images default to `admin`; creating a differently-named user is
-#             instance provisioning, not this repo's job. The server-side
-#             setup scripts are username-agnostic, so this line is the only
-#             place the choice has to be recorded.
+# Three CHANGEME values to replace in your copy:
+#
+#   HostName      the box's MagicDNS name, which server-tailscale.sh prints
+#                 when it finishes. Plain `tailscale status` does NOT show the
+#                 tailnet suffix, only the short name and the 100.x IP; the
+#                 full name is `tailscale status --json | jq -r .Self.DNSName`.
+#                 The bare short name and the 100.x IP both work here too --
+#                 see the readme.
+#   User          whatever login the instance was provisioned with. Debian
+#                 cloud images default to `admin`; creating a differently-named
+#                 user is instance provisioning, not this repo's job. The
+#                 server-side setup scripts are username-agnostic, so this line
+#                 is the only place the choice has to be recorded.
+#   IdentityFile  the key that authenticates YOU TO THE BOX -- usually the EC2
+#                 keypair the instance was launched with (a .pem, mode 400).
+#                 DELETE THE LINE ENTIRELY if your default key (~/.ssh/id_ed25519
+#                 or id_rsa) already gets you in. Do not leave the CHANGEME
+#                 path in place: ssh warns on every connection about an
+#                 identity file it cannot read.
+#
+# IdentityFile is unrelated to ForwardAgent below. This key logs you in to the
+# box; the forwarded agent is what lets git ON the box push to GitHub as you.
+# You generally want both, and neither substitutes for the other.
 
 Host agentbox
   HostName agentbox.CHANGEME.ts.net
   User CHANGEME
+  IdentityFile ~/.ssh/CHANGEME
+  # Uncomment if login fails with "Too many authentication failures": a
+  # loaded agent offers every key it holds before this one and the box
+  # cuts the connection at MaxAuthTries. This restricts the attempt to
+  # the IdentityFile above.
+  # IdentitiesOnly yes
   ForwardAgent yes
   ServerAliveInterval 30
   ServerAliveCountMax 6

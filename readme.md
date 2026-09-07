@@ -97,9 +97,16 @@ machine.
 survives a laptop lid close where plain ssh drops. It has to be on both ends.
 
 Then edit `~/.ssh/config.d/agentbox.conf` — your own copy, not the repo's
-template — and replace both `CHANGEME` placeholders: `User` with the login the
-instance was provisioned with, and `HostName` with one of these three, in
-increasing order of fuss:
+template — and replace its three `CHANGEME` placeholders:
+
+- **`User`** — the login the instance was provisioned with.
+- **`IdentityFile`** — the key that gets you in, usually the EC2 keypair the
+  instance was launched with. **Delete the line** if your default key already
+  works; leaving `CHANGEME` there makes ssh warn about an unreadable identity
+  file on every connection. This is not the same thing as `ForwardAgent`:
+  `IdentityFile` logs you in to the box, the forwarded agent is what lets git
+  *on* the box push to GitHub as you.
+- **`HostName`** — one of these three, in increasing order of fuss:
 
 | `HostName` value | How to get it | Note |
 |---|---|---|
@@ -107,7 +114,7 @@ increasing order of fuss:
 | `100.64.0.2` | column 1 of `tailscale status` | no DNS dependency; changes if you recreate the instance |
 | `agentbox.tail1a2b3c.ts.net` | `tailscale status --json \| jq -r '.Self.DNSName' \| sed 's/\.$//'` | the real MagicDNS name |
 
-`server-tailscale.sh` prints the third one for you at the end of its run.
+`server-tailscale.sh` prints the third of those for you at the end of its run.
 Note that plain `tailscale status` does **not** show the tailnet suffix — only
 the short name and the 100.x IP — so there is nothing in that table to paste
 into the `agentbox.CHANGEME.ts.net` form.
