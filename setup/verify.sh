@@ -12,7 +12,7 @@ status=0
 # file. nullglob makes an unmatched glob expand to nothing instead.
 shopt -s nullglob
 shell_files=(shell/profile.*)
-checked_files=(setup/*.sh tests/*.sh bin/* shell/aliases.common)
+checked_files=(setup/*.sh tests/*.sh bin/* shell/aliases.*)
 shopt -u nullglob
 
 # shell/profile.* must be POSIX sh, so check them with sh -n as well.

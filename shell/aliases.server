@@ -1,0 +1,15 @@
+# shellcheck shell=bash
+# Server profile aliases and prompt. Sourced from shell/aliases.common via
+# the ~/.bash_aliases.profile symlink, which server-links.sh creates.
+#
+# aliases.common sources this AFTER it sets PS1, so redefining PS1 here wins.
+
+# Prepend the short hostname to the shared prompt. On a workstation you know
+# which machine you are on; in an ssh or mosh session into one of several
+# boxes you do not, and running the wrong command on the wrong host is the
+# thing this is here to prevent. Magenta, so it reads as distinct from the
+# cyan path at a glance rather than blending into it.
+#
+# Keep the rest of this in sync with the PS1 in aliases.common: cyan \w,
+# yellow git branch, green $.
+PS1="\[\033[01;35m\]\h \[\033[01;36m\]\w\[\033[01;33m\]\$(__git_ps1)\[\033[01;32m\]\$\[\033[00m\] "

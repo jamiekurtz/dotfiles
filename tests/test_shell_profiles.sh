@@ -108,8 +108,31 @@ esac
 for a in 'alias lg=' 'alias ld=' 'alias rng=' 'alias ll='; do
   assert_contains "$content" "$a" "aliases.common defines $a"
 done
+assert_contains "$content" '.bash_aliases.profile' \
+  "aliases.common sources the repo-owned ~/.bash_aliases.profile"
 assert_contains "$content" '.bash_aliases.local' \
   "aliases.common sources ~/.bash_aliases.local"
+
+# The user's own file must be sourced last so it wins over the profile slot.
+profile_at=$(grep -n '\.bash_aliases\.profile' "$DOTFILES/shell/aliases.common" |
+  head -1 | cut -d: -f1)
+local_at=$(grep -n '\.bash_aliases\.local' "$DOTFILES/shell/aliases.common" |
+  head -1 | cut -d: -f1)
+[ "$profile_at" -lt "$local_at" ] ||
+  fail "aliases.common must source .bash_aliases.profile before .bash_aliases.local"
+
+# --- aliases.server --------------------------------------------------------
+server_aliases=$(cat "$DOTFILES/shell/aliases.server")
+assert_contains "$server_aliases" 'PS1=' \
+  "aliases.server overrides PS1"
+assert_contains "$server_aliases" '\h' \
+  "aliases.server puts the hostname in the prompt"
+
+# The override only works because aliases.common sets PS1 before sourcing the
+# profile slot. Guard that ordering.
+ps1_at=$(grep -n '^PS1=' "$DOTFILES/shell/aliases.common" | head -1 | cut -d: -f1)
+[ "$ps1_at" -lt "$profile_at" ] ||
+  fail "aliases.common must set PS1 before sourcing .bash_aliases.profile"
 
 # --- tmux clipboard --------------------------------------------------------
 tmuxconf=$(cat "$DOTFILES/.tmux.conf")

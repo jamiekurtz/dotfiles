@@ -13,6 +13,17 @@ chmod 700 "$HOME/.ssh/config.d"
 
 ln -sfn "$DOTFILES/shell/profile.desktop" "$HOME/.profile.local"
 
+# There is no aliases.desktop. Clear a slot left by the server profile so
+# switching profiles does not leave the server prompt behind. Only ever
+# remove the symlink this repo owns -- never ~/.bash_aliases.local, which
+# is the user's own file.
+#
+# An `if` rather than `[ ... ] && rm`: under `set -e` the one-liner form is
+# fine mid-script but exits 1 if it ever ends up as the last line of the file.
+if [ -L "$HOME/.bash_aliases.profile" ]; then
+  rm -f "$HOME/.bash_aliases.profile"
+fi
+
 ln -sfn "$DOTFILES/sway/config.common" "$HOME/.config/sway/config.common"
 ln -sfn "$DOTFILES/sway/config.d" "$HOME/.config/sway/config.d"
 ln -sfn "$DOTFILES/foot/foot.ini" "$HOME/.config/foot/foot.ini"

@@ -7,6 +7,7 @@ mkdir -p "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
 
 ln -sfn "$DOTFILES/shell/profile.server" "$HOME/.profile.local"
+ln -sfn "$DOTFILES/shell/aliases.server" "$HOME/.bash_aliases.profile"
 
 # On the server, PS1 and every alias reach the user only because
 # /etc/skel/.bashrc sources ~/.bash_aliases. If this user was created

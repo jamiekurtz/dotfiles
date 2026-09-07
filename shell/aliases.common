@@ -33,7 +33,15 @@ function gd() { comm -23 <(git log --pretty=format:"%s" --no-merges $(git branch
 function git-diff-master() { git diff master...HEAD; }
 function git-diff-develop() { git diff develop...HEAD; }
 
-# Profile-specific aliases, if this machine ever needs any.
+# Repo-owned, per-profile: a symlink to shell/aliases.<profile>, created by
+# the <profile>-links.sh script. Sourced here, after PS1 above, so a profile
+# can override the prompt. Only the server profile has one today.
+if [ -f "$HOME/.bash_aliases.profile" ]; then
+  . "$HOME/.bash_aliases.profile"
+fi
+
+# Yours, never touched by this repo -- machine-specific aliases go here.
+# Sourced last so it wins over both the shared block and the profile above.
 if [ -f "$HOME/.bash_aliases.local" ]; then
   . "$HOME/.bash_aliases.local"
 fi

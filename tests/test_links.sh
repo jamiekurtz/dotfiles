@@ -32,6 +32,8 @@ assert_link "$HOME/.profile.local" "$DOTFILES/shell/profile.server" \
   "$HOME/.profile.local links to profile.server"
 assert_link "$HOME/.bash_aliases" "$DOTFILES/shell/aliases.common" \
   "$HOME/.bash_aliases links to aliases.common"
+assert_link "$HOME/.bash_aliases.profile" "$DOTFILES/shell/aliases.server" \
+  "$HOME/.bash_aliases.profile links to aliases.server"
 assert_link "$HOME/.gitconfig" "$DOTFILES/.gitconfig" \
   "$HOME/.gitconfig is linked"
 assert_link "$HOME/.tmux.conf" "$DOTFILES/.tmux.conf" \
@@ -74,6 +76,8 @@ assert_link "$HOME/.config/foot/foot.ini" "$DOTFILES/foot/foot.ini" \
   "foot.ini is linked"
 assert_link "$HOME/.local/bin/swaycwd" "$DOTFILES/bin/swaycwd" \
   "swaycwd is linked on the desktop profile"
+[ -e "$HOME/.bash_aliases.profile" ] &&
+  fail "desktop profile should not create ~/.bash_aliases.profile"
 [ -f "$HOME/.ssh/config.d/agentbox.conf" ] ||
   fail "the agentbox ssh entry is not a regular file"
 [ -L "$HOME/.ssh/config.d/agentbox.conf" ] &&
@@ -92,5 +96,21 @@ HOSTNAME_OVERRIDE=shadowlt bash "$DOTFILES/setup/bootstrap.sh" desktop ||
 assert_contains "$(cat "$HOME/.ssh/config.d/agentbox.conf")" \
   "agentbox.example.ts.net" \
   "re-running bootstrap does not clobber an edited agentbox.conf"
+
+# --- profile slot: switching away clears it, user's own file survives ------
+rm -rf "$HOME"
+mkdir -p "$HOME"
+bash "$DOTFILES/setup/bootstrap.sh" server >/dev/null 2>&1 ||
+  fail "bootstrap.sh server exited non-zero"
+echo "alias mine=true" >"$HOME/.bash_aliases.local"
+assert_link "$HOME/.bash_aliases.profile" "$DOTFILES/shell/aliases.server" \
+  "server profile links the aliases profile slot"
+
+HOSTNAME_OVERRIDE=shadowlt bash "$DOTFILES/setup/bootstrap.sh" desktop \
+  >/dev/null 2>&1 || fail "bootstrap.sh desktop exited non-zero"
+[ -e "$HOME/.bash_aliases.profile" ] &&
+  fail "switching to desktop must clear the server aliases profile slot"
+assert_eq "alias mine=true" "$(cat "$HOME/.bash_aliases.local")" \
+  "switching profiles must not touch the user's own ~/.bash_aliases.local"
 
 echo "test_links: ok"

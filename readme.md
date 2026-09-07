@@ -70,6 +70,13 @@ cd ~/wd/dotfiles
 machine you are sitting at. `TS_AUTHKEY=tskey-auth-... ./setup/server-tailscale.sh`
 does it unattended.
 
+The server prompt is prefixed with the short hostname in magenta, so an ssh
+or mosh session into one of several boxes is obviously not your workstation.
+That comes from `shell/aliases.server`, linked to `~/.bash_aliases.profile`,
+which `aliases.common` sources *after* setting the shared PS1 — so a profile
+can override the prompt. `~/.bash_aliases.local` is still yours alone: the
+repo never writes it, and it is sourced last so it wins over both.
+
 `bootstrap.sh server` warns to stderr if `~/.bashrc` is missing or doesn't
 source `~/.bash_aliases` — this repo only owns `~/.bash_aliases` itself, so
 if the user was created without `/etc/skel` (common with cloud-init),
