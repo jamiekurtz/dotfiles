@@ -174,6 +174,22 @@ that copy again, so your edits survive re-running bootstrap. It prints the
 `ssh agentbox` then works from anywhere on the tailnet, with your SSH agent
 forwarded.
 
+### "terminal is not fully functional"
+
+ssh forwards your client's `$TERM`. The desktop profile runs foot, so `TERM`
+arrives as `foot`, and a server without that terminfo entry falls back to dumb
+mode — `less`, `man` and `git log` all warn. `server-packages.sh` installs
+`foot-terminfo` and `ncurses-term` to cover it.
+
+On a box built before that, or when connecting from a terminal neither package
+knows, push your local entry over instead of installing anything:
+
+```
+infocmp -x | ssh agentbox 'tic -x -'
+```
+
+That writes it to `~/.terminfo` on the server and needs no root.
+
 ### Copy and paste from the server
 
 Copying in tmux or neovim on the server lands in the clipboard of the machine

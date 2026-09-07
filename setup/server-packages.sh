@@ -5,7 +5,14 @@ set -euo pipefail
 sudo apt update
 
 # mosh survives a laptop lid close far better than plain ssh.
-sudo apt install -y mosh locales
+#
+# foot-terminfo: ssh forwards the client's $TERM, and the desktop profile's
+# terminal is foot, so a box without foot's terminfo entry greets every less,
+# man and git log with "WARNING: terminal is not fully functional". The
+# terminfo is packaged separately from foot itself precisely so it can be
+# installed on remote hosts. ncurses-term covers the same problem for the
+# other terminals worth sshing in from (tmux-256color, alacritty, kitty).
+sudo apt install -y mosh locales foot-terminfo ncurses-term
 
 # Back the UTF-8 export in shell/profile.server with a generated locale.
 # Without this, LANG=en_US.UTF-8 is set but not valid, and glyphs still break.
