@@ -20,7 +20,14 @@ rm -rf "$tmpdir"
 # LazyVim starter, only if there is no nvim config yet -- bootstrap.sh links
 # our own init.lua into it afterwards.
 if [ ! -d "$HOME/.config/nvim/lua/config" ]; then
-  git clone https://github.com/LazyVim/starter.git "$HOME/.config/nvim-lazyvim"
+  # GIT_CONFIG_GLOBAL=/dev/null so the url.insteadOf rewrite in .gitconfig
+  # does not turn this public https clone into an ssh one. This script can run
+  # before any GitHub key exists on the box (and before bootstrap has even
+  # linked .gitconfig), and an ssh clone would then fail on authentication for
+  # a repo that needs none. Do not "fix" this with `git -c ...insteadOf=`:
+  # an empty value matches every URL rather than clearing the rewrite.
+  GIT_CONFIG_GLOBAL=/dev/null \
+    git clone https://github.com/LazyVim/starter.git "$HOME/.config/nvim-lazyvim"
   rm -rf "$HOME/.config/nvim-lazyvim/.git"
   mkdir -p "$HOME/.config/nvim"
   cp -rn "$HOME/.config/nvim-lazyvim/." "$HOME/.config/nvim/"

@@ -203,7 +203,27 @@ on the server unless you ask:
 ./setup/server-ssh.sh --generate-key
 ```
 
-That prints a public key to add at https://github.com/settings/keys.
+That prints a public key to add at https://github.com/settings/keys. Adding it
+there — rather than as a per-repo deploy key — gives the box push access to
+every repo the account can write, which is the point: one key, no per-repo
+plumbing. It also means filesystem read access on the box equals push access
+to all of them, so keep the box's reachability narrow (tailnet only, no public
+port 22).
+
+Two things make that key actually get used:
+
+- `IdentitiesOnly yes` in the `github.com` block the script writes. Without it
+  a forwarded agent's keys are offered first and GitHub takes whichever valid
+  one arrives first, so a push can succeed while you are attached and fail
+  once you disconnect. Pinning the identity makes both cases behave the same.
+- `url."ssh://git@github.com/".insteadOf` in `.gitconfig`, so a repo cloned
+  with an https URL still pushes over ssh instead of prompting for a password
+  that no agent is there to type.
+
+Run `ssh -T git@github.com` once by hand afterwards, or
+`ssh-keyscan github.com >> ~/.ssh/known_hosts` — otherwise the first push
+fails with `Host key verification failed`, and non-interactively there is no
+prompt to accept the fingerprint.
 
 ### herdr
 

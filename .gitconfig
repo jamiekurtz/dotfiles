@@ -43,8 +43,12 @@
 	smudge = git-lfs smudge %f
 [diff "tool"]
 	cmd = meld -d
-#[url "ssh://git@github.com/"]
-#    insteadOf = https://github.com/
+# Push over ssh even for repos cloned with an https URL -- the readme's own
+# clone instruction uses https, and on the agent box an https remote would
+# bypass the key from setup/server-ssh.sh and prompt for a password that
+# nothing is there to type.
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
 
 [init]
 	defaultBranch = master
