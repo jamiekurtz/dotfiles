@@ -70,6 +70,40 @@ cd ~/wd/dotfiles
 machine you are sitting at. `TS_AUTHKEY=tskey-auth-... ./setup/server-tailscale.sh`
 does it unattended.
 
+**Set the OS hostname before you run it.** Tailscale registers the machine
+under `hostname -s`, which on a fresh EC2 instance is the metadata-derived
+`ip-172-31-95-119`. That becomes the machine's name on the tailnet and its
+MagicDNS name, and it is also what `\h` shows in the server prompt — so a box
+left at the default is both unfindable by a name you would guess and
+indistinguishable from any other in the prompt. Naming is per-machine, so the
+script deliberately does not invent one:
+
+```
+sudo hostnamectl set-hostname NAME
+sudo sed -i 's/^127\.0\.1\.1.*/127.0.1.1\tNAME/' /etc/hosts
+echo 'preserve_hostname: true' | sudo tee /etc/cloud/cloud.cfg.d/99-preserve-hostname.cfg
+```
+
+The second line matters because Debian cloud images map `127.0.1.1` to the old
+name, and leaving it stale makes `sudo` warn `unable to resolve host` on every
+invocation. The third matters because cloud-init's `update_hostname` module
+runs on every boot and will otherwise revert the rename from instance
+metadata.
+
+If Tailscale has already registered the box under the old name, re-register it
+without re-running the whole script:
+
+```
+sudo tailscale set --hostname=NAME
+```
+
+Prefer that over renaming in the Tailscale admin console — a client-side
+`--hostname` overrides a console rename, so `server-tailscale.sh` would undo it
+on its next run.
+
+`agentbox` throughout this readme and in `ssh/agentbox.conf.template` is just
+the example name for one such box, not something the server profile requires.
+
 The server prompt is prefixed with the short hostname in magenta, so an ssh
 or mosh session into one of several boxes is obviously not your workstation.
 That comes from `shell/aliases.server`, linked to `~/.bash_aliases.profile`,
