@@ -65,7 +65,8 @@ Exec=/usr/bin/slack --enable-features=WebRTCPipeWireCapturer %U
 
 Plug it in and the external display becomes the `11: meeting` workspace
 (`$mod+F2`); workspaces 1-10 stay on the laptop panel. `$mod+Shift+F2` sends a
-window there. No per-monitor setup: `sway/config.d/p14.conf` binds the meeting
+window there. `$mod+o` focuses the other display and `$mod+Shift+o` moves the
+current workspace to it; both toggle, so the same keys bring things back. No per-monitor setup: `sway/config.d/p14.conf` binds the meeting
 workspace to every connector name the P14 can expose. The status bar only
 shows on the panel.
 
@@ -82,5 +83,5 @@ into every output config defined before it, so the panel's `position 0,0` has
 to come after the wildcard in the config. Same for `scale`: the wildcard
 sets `scale 2` for 4K meeting displays, and the panel's `scale 1` follows it. Workspaces 1-10 are pinned to eDP-1 so a
 reload or re-plug can't drag one onto the external display. If one ends up
-there anyway, move it back with `$mod+Shift+o` from the panel side, or
+there anyway, move it back with `$mod+Shift+o` from that display, or
 `swaymsg 'move workspace to output eDP-1'`.
