@@ -30,7 +30,7 @@ cd ~/wd/dotfiles
 ```
 
 Then see `docs/desktop-notes.md` for the AWS Client VPN DNS fix, laptop power
-management, and Slack screen sharing.
+management, Slack screen sharing, and the external meeting monitor.
 
 Before launching sway, verify the config:
 
