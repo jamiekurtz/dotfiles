@@ -78,6 +78,7 @@ swaymsg -t get_outputs | grep -E '"name"|"x"|"y"'
 Both at `x: 1920` means the `output * position` wildcard clobbered the panel.
 `output *` matches every output, including eDP-1, and sway merges a wildcard
 into every output config defined before it, so the panel's `position 0,0` has
-to come after the wildcard in the config. If a workspace other than meeting
+to come after the wildcard in the config. Same for `scale`: the wildcard
+sets `scale 2` for 4K meeting displays, and the panel's `scale 1` follows it. If a workspace other than meeting
 has already landed on the external display, move it back with
 `$mod+Shift+o` from the panel side, or `swaymsg 'move workspace to output eDP-1'`.
