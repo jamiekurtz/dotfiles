@@ -33,6 +33,11 @@ function gd() { comm -23 <(git log --pretty=format:"%s" --no-merges $(git branch
 function git-diff-master() { git diff master...HEAD; }
 function git-diff-develop() { git diff develop...HEAD; }
 
+function git-prune() { git worktree list --porcelain | grep '^worktree ' | cut -d' ' -f2- | tail -n +2 | while read -r path; do
+  echo "Removing worktree: $path"
+  git worktree remove --force "$path"
+done; }
+
 # Repo-owned, per-profile: a symlink to shell/aliases.<profile>, created by
 # the <profile>-links.sh script. Sourced here, after PS1 above, so a profile
 # can override the prompt. Only the server profile has one today.
