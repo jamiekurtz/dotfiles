@@ -85,3 +85,28 @@ sets `scale 2` for 4K meeting displays, and the panel's `scale 1` follows it. Wo
 reload or re-plug can't drag one onto the external display. If one ends up
 there anyway, move it back with `$mod+Shift+o` from that display, or
 `swaymsg 'move workspace to output eDP-1'`.
+
+
+## Zoom install and configuration
+
+First download the latest DEB from the Zoom Workplace download center.
+
+Then: 
+```
+sudo apt install ~/Downloads/zoom_amd64.deb
+sudo apt install libxcb-cursor0
+cp /usr/share/applications/Zoom.desktop ~/.local/share/applications/Zoom.desktop
+vim ~/.local/share/applications/Zoom.desktop
+
+```
+
+Update the Exec line with: `Exec=env WAYLAND_DISPLAY=wayland-1 DISPLAY=:0 QT_QPA_PLATFORM=wayland /usr/bin/zoom %U`
+
+Then:
+```
+update-desktop-database ~/.local/share/applications
+```
+
+
+
+
