@@ -37,6 +37,7 @@ function git-prune() { git worktree list --porcelain | grep '^worktree ' | cut -
   echo "Removing worktree: $path"
   git worktree remove --force "$path"
 done; }
+function git-clean() { git branch -vv | grep 'gone]' | awk '{print $1}' | xargs git branch -D; }
 
 # Repo-owned, per-profile: a symlink to shell/aliases.<profile>, created by
 # the <profile>-links.sh script. Sourced here, after PS1 above, so a profile
