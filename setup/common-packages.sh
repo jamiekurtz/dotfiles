@@ -5,7 +5,7 @@ set -euo pipefail
 sudo apt update
 
 sudo apt install -y \
-  git git-flow tmux curl wget jq gron tree zip unzip ripgrep btop \
+  git git-flow tmux curl wget jq gron tree zip unzip ripgrep btop htop \
   make gpg bash-completion pipx golang ca-certificates gnupg ranger
 
 # --- neovim (upstream release, Debian's is too old for LazyVim) -----------
