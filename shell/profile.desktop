@@ -16,5 +16,11 @@ fi
 if [ -z "${WAYLAND_DISPLAY:-}" ] &&
   [ "${XDG_VTNR:-}" = 1 ] &&
   [ ! -f "$HOME/.no-sway" ]; then
-  exec sway
+  # Log to a file rather than tty1 so crash output survives a re-login.
+  # The previous session's log is kept as sway.log.old.
+  sway_log_dir="${XDG_STATE_HOME:-$HOME/.local/state}/sway"
+  mkdir -p "$sway_log_dir"
+  [ -f "$sway_log_dir/sway.log" ] &&
+    mv -f "$sway_log_dir/sway.log" "$sway_log_dir/sway.log.old"
+  exec sway >"$sway_log_dir/sway.log" 2>&1
 fi

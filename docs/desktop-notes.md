@@ -110,3 +110,47 @@ update-desktop-database ~/.local/share/applications
 
 
 
+
+## Debugging sway crashes
+
+sway's stdout/stderr go to `~/.local/state/sway/sway.log` (set up in
+`shell/profile.desktop`). Each tty1 login rotates the previous session's log
+to `sway.log.old`, so after a crash and re-login, look there.
+
+For stack traces, `setup/desktop-packages.sh` installs the systemd core dump
+handler. On an older install, add it by hand:
+
+```
+sudo apt install systemd-coredump
+cat /proc/sys/kernel/core_pattern   # should start with |/usr/lib/systemd/systemd-coredump
+```
+
+After a crash:
+
+```
+tail -50 ~/.local/state/sway/sway.log.old
+coredumpctl list sway
+coredumpctl info sway
+```
+
+Debug symbols make the trace readable: `sudo apt install debian-goodies`, then
+`find-dbgsym-packages $(which sway)` (needs the Debian debug repo enabled).
+
+### 2026-10-23 crash on shadowws (meerkat)
+
+sway 1.10.1 / wlroots 0.18.2 aborted at 16:19:59 with an assertion failure,
+seen only in the tty1 console buffer (`sudo cat /dev/vcs1`):
+
+```
+...e->width && box->y + box->height <= options->texture->height' failed.
+Aborted
+```
+
+This is the check that a texture's source box lies within the texture,
+probably in wlroots' render pass. No kernel segfault, GPU/DRM error or OOM
+in the journal. Suspected trigger is the fractional scaling added on
+2026-10-21 in `sway/config.d/meerkat.conf` (secondary `scale 1.6` with
+`transform 270`, primary `scale 1.5`). Not confirmed: no core dump or full
+log existed at the time. If it recurs, grab the full assertion from the log
+and the `coredumpctl info` trace; then try integer or matching scales, check
+for a wlroots newer than 0.18.2, or report upstream.

@@ -18,6 +18,9 @@ sudo apt install -y \
 # needed for bin/swaycwd
 sudo apt install -y jq gron
 
+# core dumps for sway crashes (coredumpctl); see docs/desktop-notes.md
+sudo apt install -y systemd-coredump
+
 # --- JetBrains Mono Nerd Font --------------------------------------------
 # Fonts belong on the machine that draws the pixels, which is this one.
 # The EC2 box never needs them: neovim there emits the codepoints and this
