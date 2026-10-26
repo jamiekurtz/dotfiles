@@ -169,3 +169,10 @@ Native-Wayland Chromium clients running at the time: Slack, Chrome,
 1Password. Experiment: Slack moved to XWayland via `applications/slack.desktop`
 (see "Slack screen sharing"). No more crashes points at Slack; a crash
 anyway rules it out.
+
+Result: sway aborted again at 10:32:01 with the same assertion while Slack
+was on XWayland (confirmed with
+`swaymsg -t get_tree | grep -B5 '"shell": "xwayland"'`), so Slack is ruled
+out. Next experiment: both outputs at integer `scale 2` (primary offset 800),
+Slack still on XWayland. No crash points at fractional scaling; a crash
+moves suspicion to Chrome, which would go to XWayland next.
