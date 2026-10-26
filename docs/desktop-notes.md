@@ -45,21 +45,17 @@ powerprofilesctl set power-saver  # or balanced or performance
 
 ## Slack screen sharing
 
-After installing Slack (e.g. using their official Debian package), you need to update
-the associated shortcut as follows:
+The desktop profile links `applications/slack.desktop` over the system
+launcher at `~/.local/share/applications/slack.desktop`, so wofi starts Slack
+with the PipeWire capturer it needs for screen sharing under sway:
 
 ```
-cp /usr/share/applications/slack.desktop ~/.local/share/applications
-vim ~/.local/share/applications/slack.desktop
+Exec=/usr/bin/slack --ozone-platform=x11 --enable-features=WebRTCPipeWireCapturer %U
 ```
 
-Insert the following pipewire argument into the Exec line to make it look like:
-
-```
-Exec=/usr/bin/slack --enable-features=WebRTCPipeWireCapturer %U
-```
-
-
+`--ozone-platform=x11` (XWayland) is temporary, added 2026-10-26 to test
+whether Slack triggers the sway crash below. It makes Slack blurry at
+fractional scales; remove it once the test is over.
 
 ## External monitor on the P14 (meetings)
 
@@ -154,3 +150,22 @@ in the journal. Suspected trigger is the fractional scaling added on
 log existed at the time. If it recurs, grab the full assertion from the log
 and the `coredumpctl info` trace; then try integer or matching scales, check
 for a wlroots newer than 0.18.2, or report upstream.
+
+### 2026-10-26 recurrence
+
+Same abort at 08:45:18, now with both outputs at `scale 1.75` (secondary still
+`transform 270`), so changing the fractional values did not help. Full text,
+recovered from the core dump (`coredumpctl dump <pid> -o sway.core`, then
+`strings sway.core | grep Assertion`):
+
+```
+sway: render/pass.c:23: wlr_render_pass_add_texture: Assertion `box->x >= 0 && box->y >= 0 && box->x + box->width <= options->texture->width && box->y + box->height <= options->texture->height' failed.
+```
+
+There was no `sway.log`: `~/.no-sway` exists, so sway was started by hand
+from the tty1 shell and logged to tty1, not through `shell/profile.desktop`.
+
+Native-Wayland Chromium clients running at the time: Slack, Chrome,
+1Password. Experiment: Slack moved to XWayland via `applications/slack.desktop`
+(see "Slack screen sharing"). No more crashes points at Slack; a crash
+anyway rules it out.

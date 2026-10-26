@@ -7,6 +7,7 @@ mkdir -p \
   "$HOME/.config/sway" "$HOME/.config/foot" "$HOME/.config/mako" \
   "$HOME/.config/swappy" "$HOME/.config/i3status" \
   "$HOME/.config/xdg-desktop-portal" "$HOME/.local/bin" \
+  "$HOME/.local/share/applications" \
   "$HOME/.ssh/config.d"
 chmod 700 "$HOME/.ssh"
 chmod 700 "$HOME/.ssh/config.d"
@@ -31,6 +32,9 @@ ln -sfn "$DOTFILES/mako/config" "$HOME/.config/mako/config"
 ln -sfn "$DOTFILES/swappy/config" "$HOME/.config/swappy/config"
 ln -sfn "$DOTFILES/i3status/config" "$HOME/.config/i3status/config"
 ln -sfn "$DOTFILES/bin/swaycwd" "$HOME/.local/bin/swaycwd"
+# Overrides /usr/share/applications/slack.desktop for wofi drun.
+ln -sfn "$DOTFILES/applications/slack.desktop" \
+  "$HOME/.local/share/applications/slack.desktop"
 
 # Client-side ssh entry for the EC2 agent box. Never rewrite the user's own
 # ~/.ssh/config -- drop a fragment in and tell them how to include it.

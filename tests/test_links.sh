@@ -76,6 +76,9 @@ assert_link "$HOME/.config/foot/foot.ini" "$DOTFILES/foot/foot.ini" \
   "foot.ini is linked"
 assert_link "$HOME/.local/bin/swaycwd" "$DOTFILES/bin/swaycwd" \
   "swaycwd is linked on the desktop profile"
+assert_link "$HOME/.local/share/applications/slack.desktop" \
+  "$DOTFILES/applications/slack.desktop" \
+  "the Slack launcher override is linked on the desktop profile"
 [ -e "$HOME/.bash_aliases.profile" ] &&
   fail "desktop profile should not create ~/.bash_aliases.profile"
 [ -f "$HOME/.ssh/config.d/agentbox.conf" ] ||
