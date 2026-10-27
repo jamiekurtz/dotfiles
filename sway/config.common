@@ -17,7 +17,7 @@ exec dbus-update-activation-environment --systemd \
 exec --no-startup-id dex --autostart --environment sway
 
 # Using mako instead of dunst (Wayland-native, no XWayland dependency).
-exec --no-startup-id mako
+# Started from config.d/<hostname>.conf, since the target output is per-host.
 
 exec --no-startup-id nm-applet --indicator
 
