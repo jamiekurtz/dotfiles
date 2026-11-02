@@ -50,12 +50,8 @@ launcher at `~/.local/share/applications/slack.desktop`, so wofi starts Slack
 with the PipeWire capturer it needs for screen sharing under sway:
 
 ```
-Exec=/usr/bin/slack --ozone-platform=x11 --enable-features=WebRTCPipeWireCapturer %U
+Exec=/usr/bin/slack --enable-features=WebRTCPipeWireCapturer %U
 ```
-
-`--ozone-platform=x11` (XWayland) is temporary, added 2026-10-26 to test
-whether Slack triggers the sway crash below. It makes Slack blurry at
-fractional scales; remove it once the test is over.
 
 ## External monitor on the P14 (meetings)
 
@@ -176,3 +172,7 @@ was on XWayland (confirmed with
 out. Next experiment: both outputs at integer `scale 2` (primary offset 800),
 Slack still on XWayland. No crash points at fractional scaling; a crash
 moves suspicion to Chrome, which would go to XWayland next.
+
+No crash in the week since at `scale 2`, so on 2026-11-02 Slack went back to
+native Wayland (`--ozone-platform=x11` dropped from `applications/slack.desktop`).
+A crash now, still at integer scale, would point back at Slack.
