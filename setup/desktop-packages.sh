@@ -14,7 +14,7 @@ sudo apt install -y \
   network-manager network-manager-gnome mate-polkit \
   thermald fonts-dejavu firefox-esr gsimplecal \
   thunar thunar-archive-plugin file-roller \
-  kdiff3 tmux
+  kdiff3 tmux geany
 
 # needed for bin/swaycwd
 sudo apt install -y jq gron
@@ -72,7 +72,7 @@ if [ "$(hostname)" = "shadowlt" ]; then
 fi
 
 # --- media viewing -------------------------------------------------
-sudo apt install zathura zathura-pdf-poppler imv mpv
+sudo apt install -y zathura zathura-pdf-poppler imv mpv
 xdg-mime default org.pwmt.zathura.desktop application/pdf
 xdg-mime default imv.desktop image/png image/jpeg
 xdg-mime default mpv.desktop video/mp4 video/x-matroska
