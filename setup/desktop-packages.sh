@@ -12,7 +12,7 @@ sudo apt install -y \
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
   grim slurp swappy wl-clipboard brightnessctl pulsemixer \
   network-manager network-manager-gnome mate-polkit \
-  thermald fonts-dejavu firefox-esr gsimplecal \
+  thermald fonts-dejavu fonts-noto-color-emoji firefox-esr gsimplecal \
   thunar thunar-archive-plugin file-roller \
   kdiff3 tmux geany
 
