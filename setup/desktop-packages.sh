@@ -14,7 +14,7 @@ sudo apt install -y \
   network-manager network-manager-gnome mate-polkit \
   thermald fonts-dejavu fonts-noto-color-emoji firefox-esr gsimplecal \
   thunar thunar-archive-plugin file-roller \
-  kdiff3 tmux geany
+  kdiff3 tmux geany pwgen
 
 # needed for bin/swaycwd
 sudo apt install -y jq gron
